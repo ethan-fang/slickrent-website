@@ -1,0 +1,43 @@
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Intellij Files
+*.iml
+*.ipr
+*.iws
+.idea
+
+# Eclipse files
+.classpath
+.externalToolBuilders
+.project
+.settings
+
+# Maven output
+dependency-reduced-pom.xml
+target
+test-output
+logs
+release.properties
+pom.xml.releaseBackup
+.pmd*
+.checkstyle
+coverage
+
+# Other crap
+.DS_Store
+.vagrant
+pkg
+*.log
+*~
+*.lo
+*.o
+*.pc
+*.status
+*.pyc
+.rakeTasks
+.rvmrc
