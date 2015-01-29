@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="lend">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap 101 Template</title>
+    <title>slickrent</title>
 
     <!-- Bootstrap -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/cover.css" rel="stylesheet">
@@ -20,7 +20,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body ng-app="lend">
+<body>
 
 <div class="site-wrapper">
 
@@ -32,9 +32,9 @@
                     <h3 class="masthead-brand">Slickrent</h3>
                     <nav>
                         <ul class="nav masthead-nav">
-                            <li class="active"><a href="#">Home</a></li>
-                            <li><a href="#">Features</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="index.html">Home</a></li>
+                            <li class="active"><a href="#">Lend</a></li>
+                            <li><a href="borrow.html">Borrow</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -42,12 +42,44 @@
 
             <div class="inner cover">
                 <h1 class="cover-heading">lend your tool</h1>
-                <div class="row">
-                    <div class="col-md-2 col-md-offset-4" ng-controller = "uploadController">
-                        <input class="voffset3" type="file" file-model="myFile"/>
-                        <button class="btn btn-primary voffset3" ng-click="uploadFile()">upload me</button>
+
+                <br /><br />
+
+                <form class="form-horizontal" name="itemForm" ng-controller = "uploadController">
+                    <div class="form-group">
+                        <label for="itemName" class="col-md-2 control-label">Name:</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="itemName" placeholder="name" name="name" ng-model="item.name" required>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="itemDescription" class="col-md-2 control-label">Description:</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="itemDescription" placeholder="description" name="description" ng-model="item.description" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemPrice" class="col-md-2 control-label">Price/day ($):</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="itemPrice" placeholder="price" name="price" ng-model="item.price" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="itemImage" class="col-md-2 control-label">Image:</label>
+                        <div class="col-md-10">
+                            <input type="file" id="itemImage" name="image" file-model="item.image" required>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-8 col-md-4"><input type="submit" class="btn btn-primary btn-block" ng-click="uploadItem(item)" value="Upload" /></div>
+                    </div>
+
+
+                </form>
+
             </div>
 
             <div class="mastfoot">

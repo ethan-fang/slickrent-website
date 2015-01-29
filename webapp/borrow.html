@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="borrow">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +7,11 @@
     <title>slickrent</title>
 
     <!-- Bootstrap -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/cover.css" rel="stylesheet">
+    <link href="css/slickrent.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,7 +25,6 @@
 <div class="site-wrapper">
 
     <div class="site-wrapper-inner">
-
         <div class="cover-container">
 
             <div class="masthead clearfix">
@@ -32,22 +32,29 @@
                     <h3 class="masthead-brand">Slickrent</h3>
                     <nav>
                         <ul class="nav masthead-nav">
-                            <li class="active"><a href="#">Home</a></li>
+                            <li><a href="index.html">Home</a></li>
                             <li><a href="lend.html">Lend</a></li>
-                            <li><a href="borrow.html">Borrow</a></li>
+                            <li class="active"><a href="#">Borrow</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
 
-            <div class="inner cover">
-                <h1 class="cover-heading">hassle free tool rental</h1>
-                <p class="lead">Love your neighbour and rely on each other on tool sharing</p>
-                <div class="btn-group">
-                    <div><a href="borrow.html" class="btn btn-lg btn-primary btn-block">Borrow tools</a></div>
-                    <br/>
-                    <div><a href="lend.html" class="btn btn-lg btn-primary btn-block">Lend tools</a></div>
+            <div class="inner cover voffset9">
+                <h1 class="cover-heading">browse tools</h1>
+
+                <br /><br />
+                <div class="row-fluid" ng-controller="borrowController as itemCtl">
+                    <div class="col-md-4 item-box" ng-repeat="item in itemCtl.items">
+                        <div class="item-box-inside">
+                            <div class="col-md-4">{{item.name}}</div>
+                            <div class="col-md-offset-4 col-md-4">{{item.price}}</div>
+                        </div>
+                    </div>
                 </div>
+
+
+
             </div>
 
             <div class="mastfoot">
@@ -66,5 +73,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="js/borrow.js"></script>
 </body>
 </html>
