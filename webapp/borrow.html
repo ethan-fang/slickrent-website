@@ -44,11 +44,16 @@
                 <h1 class="cover-heading">browse tools</h1>
 
                 <br /><br />
-                <div class="row-fluid" ng-controller="borrowController as itemCtl">
-                    <div class="col-md-4 item-box" ng-repeat="item in itemCtl.items">
+                <div class="row-fluid" ng-controller="borrowController">
+                    <div class="col-md-4 item-box" ng-repeat="item in items">
                         <div class="item-box-inside">
-                            <div class="col-md-4">{{item.name}}</div>
-                            <div class="col-md-offset-4 col-md-4">{{item.price}}</div>
+                            <div class="col-md-12">{{item.itemName}}</div>
+                            <div class="col-md-12">{{item.itemDescription}}</div>
+                            <!--<div class="col-md-12">Available: {{item.rentalPeriod.lowerEndpoint}} - {{item.rentalPeriod.upperEndpoint}}</div>-->
+                            <div class="col-md-12">
+                                <img class="image-thumbnail img-responsive" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/image/{{item.imageUuids[0]}}" >
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>

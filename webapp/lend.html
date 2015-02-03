@@ -7,7 +7,8 @@
     <title>slickrent</title>
 
     <!-- Bootstrap -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" rel="stylesheet" />
 
     <!-- Custom styles for this template -->
     <link href="css/cover.css" rel="stylesheet">
@@ -40,12 +41,16 @@
                 </div>
             </div>
 
-            <div class="inner cover">
+            <div class="inner cover" ng-controller = "uploadController">
+                <br /><br />
                 <h1 class="cover-heading">lend your tool</h1>
-
                 <br /><br />
 
-                <form class="form-horizontal" name="itemForm" ng-controller = "uploadController">
+                <div ng-hide="true" ng-cloak class="ng-cloak alert alert-success alert-dismissible" role="alert">Your upload has succeeded!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <form class="form-horizontal" name="itemForm" >
                     <div class="form-group">
                         <label for="itemName" class="col-md-2 control-label">Name:</label>
                         <div class="col-md-10">
@@ -65,10 +70,43 @@
                         </div>
                     </div>
 
+
+                    <div class="form-group">
+                        <label for="rentalStartTime" class="col-md-2 control-label">rental start:</label>
+                        <div class="col-md-10">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                    <div class="input-group"><input  id="rentalStartTime" type="text" class="form-control" data-ng-model="item.rentalStart" required>
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <datetimepicker data-ng-model="item.rentalStart" data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'hour' }"/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rentalEndTime" class="col-md-2 control-label">rental end: </label>
+                        <div class="col-md-10">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                    <div class="input-group"><input  id="rentalEndTime" type="text" class="form-control" data-ng-model="item.rentalEnd" required>
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <datetimepicker data-ng-model="item.rentalEnd" data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minView: 'hour'}"/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="itemImage" class="col-md-2 control-label">Image:</label>
                         <div class="col-md-10">
-                            <input type="file" id="itemImage" name="image" file-model="item.image" required>
+                            <input type="file" id="itemImage" name="image" file-model="item.image" >
                         </div>
                     </div>
 
@@ -94,11 +132,14 @@
 
 </div>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+
 <script src="js/lend.js"></script>
+
 </body>
 </html>
