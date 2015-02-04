@@ -12,6 +12,7 @@
     <!-- Custom styles for this template -->
     <link href="css/cover.css" rel="stylesheet">
     <link href="css/slickrent.css" rel="stylesheet">
+    <link href="css/borrow.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -44,17 +45,20 @@
                 <h1 class="cover-heading">browse tools</h1>
 
                 <br /><br />
-                <div class="row-fluid" ng-controller="borrowController">
-                    <div class="col-md-4 item-box" ng-repeat="item in items">
-                        <div class="item-box-inside">
-                            <div class="col-md-12">{{item.itemName}}</div>
-                            <div class="col-md-12">{{item.itemDescription}}</div>
-                            <!--<div class="col-md-12">Available: {{item.rentalPeriod.lowerEndpoint}} - {{item.rentalPeriod.upperEndpoint}}</div>-->
-                            <div class="col-md-12">
-                                <img class="image-thumbnail img-responsive" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/image/{{item.imageUuids[0]}}" >
+                <!--<div ng-controller="borrowController" when-scrolled="loadMore()">-->
+                <div ng-controller="borrowController">
+                    <div class="row-fluid scroll-row" >
+                        <div class="col-md-4 item-box" ng-repeat="item in items">
+                            <div class="item-box-inside">
+                                <div class="col-md-12">{{item.itemName}}</div>
+                                <div class="col-md-12">{{item.itemDescription}}</div>
+                                <div class="col-md-12">
+                                    <img class="image-thumbnail img-responsive" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/image/{{item.imageUuids[0]}}" >
+                                </div>
+                            </div>
                             </div>
                         </div>
-                        </div>
+                        <div><button class="btn" href="#" ng-click="loadMore()">Load more</button></div>
                     </div>
                 </div>
 

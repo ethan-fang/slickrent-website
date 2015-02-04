@@ -13,6 +13,7 @@
     <!-- Custom styles for this template -->
     <link href="css/cover.css" rel="stylesheet">
     <link href="css/slickrent.css" rel="stylesheet">
+    <link href="css/lend.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,7 +47,7 @@
                 <h1 class="cover-heading">lend your tool</h1>
                 <br /><br />
 
-                <div ng-hide="true" ng-cloak class="ng-cloak alert alert-success alert-dismissible" role="alert">Your upload has succeeded!
+                <div ng-show="uploadSuccess" ng-cloak class="alert alert-success alert-dismissible" role="alert">Your item has been uploaded!
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 

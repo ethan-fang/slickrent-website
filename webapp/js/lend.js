@@ -1,8 +1,8 @@
 var lendApp = angular.module('lend', ['ui.bootstrap.datetimepicker']);
 
 
-var SERVICE_HOST = "http://localhost:8080/"
-//var SERVICE_HOST = "https://ec2-54-173-114-114.compute-1.amazonaws.com/"
+var SERVICE_HOST = "http://localhost:8080/api/"
+//var SERVICE_HOST = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/"
 
 lendApp.directive('fileModel', ['$parse', function ($parse) {
     return {
@@ -81,8 +81,8 @@ lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
         })
         .success(function(){
             $log.info("upload successful");
-//                $scope.uploadSuccess = true;
                 $scope.item = {};
+                $scope.uploadSuccess = true;
             });
     };
 
@@ -91,7 +91,6 @@ lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
 
 lendApp.controller('uploadController', ['$scope', '$log', 'itemUpload', function($scope, $log, itemUpload){
     $scope.uploadSuccess = false;
-
     $scope.uploadImage = function(){
         var file = $scope.item.image;
         console.log('file is ' + JSON.stringify(file));
