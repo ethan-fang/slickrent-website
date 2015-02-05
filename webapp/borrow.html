@@ -47,13 +47,13 @@
                 <br /><br />
                 <!--<div ng-controller="borrowController" when-scrolled="loadMore()">-->
                 <div ng-controller="borrowController">
-                    <div class="row-fluid scroll-row" >
+                    <div class="row-fluid scroll-row" ng-show="items.length>0" ng-cloak>
                         <div class="col-md-4 item-box" ng-repeat="item in items">
                             <div class="item-box-inside">
                                 <div class="col-md-12">{{item.itemName}}</div>
                                 <div class="col-md-12">{{item.itemDescription}}</div>
                                 <div class="col-md-12">
-                                    <img class="image-thumbnail img-responsive" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/image/{{item.imageUuids[0]}}" >
+                                    <img class="image-thumbnail img-responsive" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/image/{{item.imageUuids[0]}}" >
                                 </div>
                             </div>
                             </div>
