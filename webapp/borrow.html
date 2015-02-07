@@ -35,42 +35,13 @@
                         <ul class="nav masthead-nav">
                             <li><a href="index.html">Home</a></li>
                             <li><a href="lend.html">Lend</a></li>
-                            <li class="active"><a href="#">Borrow</a></li>
+                            <li class="active"><a href="borrow.html#/item">Borrow</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
 
-            <div class="inner cover voffset9">
-                <h1 class="cover-heading">browse tools</h1>
-
-                <br /><br />
-                <!--<div ng-controller="borrowController" when-scrolled="loadMore()">-->
-                <div ng-controller="borrowController">
-                    <div class="row-fluid scroll-row" ng-show="items.length>0" ng-cloak>
-                        <div class="col-md-4 item-box" ng-repeat="item in items">
-                            <div class="item-box-inside">
-                                <div class="col-md-12">{{item.itemName}}</div>
-                                <div class="col-md-12">{{item.itemDescription}}</div>
-                                <div class="col-md-12">
-                                    <img class="image-thumbnail img-responsive" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/image/{{item.imageUuids[0]}}" >
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        <div><button class="btn" href="#" ng-click="loadMore()">Load more</button></div>
-                    </div>
-                </div>
-
-
-
-            </div>
-
-            <div class="mastfoot">
-                <div class="inner">
-                    <p>Slickrent.</p>
-                </div>
-            </div>
+            <div ng-view></div>
 
         </div>
 
@@ -83,6 +54,8 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
 <script src="js/borrow.js"></script>
+<script src="js/ItemControllers.js"></script>
 </body>
 </html>

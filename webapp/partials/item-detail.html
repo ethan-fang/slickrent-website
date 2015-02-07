@@ -1,0 +1,44 @@
+<div class="inner cover voffset9">
+    <h1 class="cover-heading">The tool detail</h1>
+
+    <br /><br />
+    <div ng-controller="itemListCtrl" >
+        <div class="row-fluid scroll-row">
+            <div class="col-md-12">
+                <img class="img-responsive center-block" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/image/{{item.imageUuids[0]}}" >
+            </div>
+        </div>
+
+        <br /><br />
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Name</h3>
+            </div>
+            <div class="panel-body  text-success">
+                {{item.itemName}}
+            </div>
+            <div class="panel-heading">
+                <h3 class="panel-title">Description</h3>
+            </div>
+            <div class="panel-body text-success">
+                {{item.itemDescription}}
+            </div>
+            <div class="panel-heading">
+                <h3 class="panel-title">Price/Hour (USD$)</h3>
+            </div>
+            <div class="panel-body text-success">
+                {{item.price.amount.amount/100 | currency:"$"}}
+            </div>
+            <div class="panel-heading">
+                <h3 class="panel-title">Rental period</h3>
+            </div>
+            <div class="panel-body text-success">
+                <div>From: {{item.rentalPeriod.lowerEndpoint |  date:'MM/dd/yyyy @ h:mma'}}</div>
+                <div>To: {{item.rentalPeriod.upperEndpoint |  date:'MM/dd/yyyy @ h:mma'}}</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
