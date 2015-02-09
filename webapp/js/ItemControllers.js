@@ -22,7 +22,6 @@ itemControllers.controller('itemListCtrl', ['$scope', '$http', '$log',
         $scope.items = [
         ];
 
-
         $scope.loadMore = function() {
             $http({
                 url: SERVICE_HOST + "shareitem",

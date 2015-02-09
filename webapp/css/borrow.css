@@ -9,3 +9,15 @@
 .mastfoot {
     margin-top: 100px;
 }
+
+.caption{
+    height: 200px;
+}
+
+.text-black {
+    color: black;
+}
+
+.breadcrumb {
+    background-color: transparent;
+}

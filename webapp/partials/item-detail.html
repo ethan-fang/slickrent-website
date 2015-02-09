@@ -1,40 +1,49 @@
 <div class="inner cover voffset9">
+    <div class="row">
+    <ol class="breadcrumb breadcrumb-pr pull-left transparent-background">
+        <li><a href="#item">Borrow</a></li>
+        <li class="active">Detail</li>
+    </ol>
+    </div>
+
     <h1 class="cover-heading">The tool detail</h1>
 
-    <br /><br />
-    <div ng-controller="itemListCtrl" >
-        <div class="row-fluid scroll-row">
-            <div class="col-md-12">
-                <img class="img-responsive center-block" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/image/{{item.imageUuids[0]}}" >
-            </div>
+    <br/>
+
+
+    <div class="row thumbnail" ng-controller="itemListCtrl">
+        <div>
+            <a href="#/item/{{item.id}}">
+                <img class="image-thumbnail img-responsive"
+                     ng-src="https://ec2-54-173-114-114.compute-1.amazonaws.com/api/image/{{item.imageUuids[0]}}">
+            </a>
         </div>
 
-        <br /><br />
-        <div class="panel panel-primary">
+        <div class="panel panel-primary voffset4">
             <div class="panel-heading">
                 <h3 class="panel-title">Name</h3>
             </div>
-            <div class="panel-body  text-success">
+            <div class="panel-body text-black">
                 {{item.itemName}}
             </div>
             <div class="panel-heading">
                 <h3 class="panel-title">Description</h3>
             </div>
-            <div class="panel-body text-success">
+            <div class="panel-body text-black">
                 {{item.itemDescription}}
             </div>
             <div class="panel-heading">
                 <h3 class="panel-title">Price/Hour (USD$)</h3>
             </div>
-            <div class="panel-body text-success">
-                {{item.price.amount.amount/100 | currency:"$"}}
+            <div class="panel-body text-black">
+                {{ (item.price.amount.amount/100 | currency:"$") || "N/A" }}
             </div>
             <div class="panel-heading">
                 <h3 class="panel-title">Rental period</h3>
             </div>
-            <div class="panel-body text-success">
-                <div>From: {{item.rentalPeriod.lowerEndpoint |  date:'MM/dd/yyyy @ h:mma'}}</div>
-                <div>To: {{item.rentalPeriod.upperEndpoint |  date:'MM/dd/yyyy @ h:mma'}}</div>
+            <div class="panel-body text-black">
+                {{item.rentalPeriod.lowerEndpoint | date:'MM/dd/yyyy @ h:mma'}} -
+                {{item.rentalPeriod.upperEndpoint | date:'MM/dd/yyyy @ h:mma'}}
             </div>
 
         </div>
