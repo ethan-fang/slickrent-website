@@ -37,7 +37,19 @@
                             <li><a href="index.html">Home</a></li>
                             <li class="active"><a href="#">Lend</a></li>
                             <li><a href="borrow.html">Borrow</a></li>
-                            <li><a href="login.html">Login</a></li>
+                            <li ng-show="!currentUser" ng-cloak><a href="login.html">Login</a></li>
+                            <li ng-show="currentUser" ng-cloak>
+                                <div class="dropdown">
+                                    <i class="btn dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-expanded="true">
+                                        {{currentUser.username}} <span class="caret"></span>
+                                    </i>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Logout</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">View profile</a></li>
+                                    </ul>
+
+                                </div>
+                            </li>
                         </ul>
                     </nav>
                 </div>

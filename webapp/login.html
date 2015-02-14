@@ -37,14 +37,29 @@
                             <li><a href="index.html">Home</a></li>
                             <li><a href="lend.html">Lend</a></li>
                             <li><a href="borrow.html">Borrow</a></li>
-                            <li class="active"><a href="#">Login</a></li>
+                            <li class="active" ng-show="!currentUser" ng-cloak><a href="#">Login</a></li>
+                            <li ng-show="currentUser" ng-cloak>
+                                <div class="dropdown">
+                                    <i class="btn dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-expanded="true">
+                                        {{currentUser.username}} <span class="caret"></span>
+                                    </i>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Logout</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">View profile</a></li>
+                                    </ul>
+
+                                </div>
+                            </li>
                         </ul>
                     </nav>
                 </div>
             </div>
 
             <div class="inner cover">
-                <div ng-show="currentUser" ng-cloak>Welcome {{currentUser.username}}</div>
+                <div ng-show="currentUser" ng-cloak>
+                    Welcome {{currentUser.username}}
+
+                </div>
                 <div ng-show="!currentUser" ng-cloak>
                     <form class="form-signin" ng-submit="login(credentials)">
                         <h2 class="form-signin-heading">Please sign in</h2>
