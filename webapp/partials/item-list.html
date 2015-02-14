@@ -1,10 +1,14 @@
-<div class="inner cover">
+<div class="inner cover voffset9">
+
     <h1 class="cover-heading">browse tools</h1>
 
     <br /><br />
-    <div ng-controller="itemListCtrl">
+    <div ng-controller="ItemListCtrl">
+        Search: <input ng-model="searchText" class="text-black">
+
+        <br /><br />
         <div class="row scroll-row" ng-show="items.length>0" ng-cloak>
-            <div class="col-sm-6 col-md-4" ng-repeat="item in items">
+            <div class="col-sm-6 col-md-4" ng-repeat="item in items | filter:searchText">
                 <div class="thumbnail">
                     <a href="#/item/{{item.id}}">
                         <img class="image-thumbnail img-responsive" ng-src = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/image/{{item.imageUuids[0]}}" >

@@ -1,6 +1,6 @@
 var itemControllers = angular.module('itemControllers', []);
 
-itemControllers.controller('itemDetailCtrl', ['$scope','$routeParams', '$http', '$log',
+itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', '$log',
     function($scope, $routeParams, $http, $log) {
         var itemId = $routeParams.itemId;
 
@@ -17,7 +17,7 @@ itemControllers.controller('itemDetailCtrl', ['$scope','$routeParams', '$http', 
     }
 ]);
 
-itemControllers.controller('itemListCtrl', ['$scope', '$http', '$log',
+itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log',
     function($scope, $http, $log) {
         $scope.items = [
         ];

@@ -10,11 +10,11 @@ borrowApp.config(['$routeProvider',
         $routeProvider.
             when('/item/:itemId', {
                 templateUrl: 'partials/item-detail.html',
-                controller: 'itemDetailCtrl'
+                controller: 'ItemDetailCtrl'
             }).
             when('/item', {
                 templateUrl: 'partials/item-list.html',
-                controller: 'itemListCtrl'
+                controller: 'ItemListCtrl'
             }).
             otherwise({
                 redirectTo: '/item'
