@@ -1,10 +1,5 @@
 var loginApp = angular.module('login', []);
 
-
-var SERVICE_HOST = "http://localhost:8080/api/";
-//var SERVICE_HOST = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/";
-
-
 loginApp.constant('AUTH_EVENTS', {
     loginSuccess: 'auth-login-success',
     loginFailed: 'auth-login-failed',
@@ -77,16 +72,8 @@ loginApp.controller('LoginController', ['$scope', '$rootScope', '$log', '$window
 
     $scope.currentUser = JSON.parse($window.sessionStorage.getItem('currentUser'));
 
-    $log.info($scope.currentUser);
-
     $scope.login = function (credentials) {
-        $log.info(credentials);
-//        $log.info(AUTH_EVENTS.loginSuccess);
-
-//        clearLoginForm();
-
         authService.login(credentials).then(function (user) {
-//            $rootScope.currentUser = user;
             $window.sessionStorage.setItem('currentUser', JSON.stringify(user));
             $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
             $scope.setCurrentUser(user);
@@ -98,14 +85,4 @@ loginApp.controller('LoginController', ['$scope', '$rootScope', '$log', '$window
     $scope.setCurrentUser = function(user) {
         $scope.currentUser = user;
     }
-
-
-    var clearLoginForm = function() {
-        $scope.credentials = {
-            email: '',
-            password: ''
-        };
-    };
-
-
 }]);

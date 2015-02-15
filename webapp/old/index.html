@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="login">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,12 +7,10 @@
     <title>slickrent</title>
 
     <!-- Bootstrap -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/cover.css" rel="stylesheet">
-    <link href="css/slickrent.css" rel="stylesheet">
-
+    <link href="../css/cover.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -21,7 +19,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body  ng-controller="LoginController" >
+<body>
 
 <div class="site-wrapper">
 
@@ -34,10 +32,10 @@
                     <h3 class="masthead-brand">Slickrent</h3>
                     <nav>
                         <ul class="nav masthead-nav">
-                            <li><a href="index.html">Home</a></li>
+                            <li class="active"><a href="#">Home</a></li>
                             <li><a href="lend.html">Lend</a></li>
                             <li><a href="borrow.html">Borrow</a></li>
-                            <li class="active" ng-show="!currentUser" ng-cloak><a href="#">Login</a></li>
+                            <li ng-show="!currentUser" ng-cloak><a href="login.html">Login</a></li>
                             <li ng-show="currentUser" ng-cloak>
                                 <div class="dropdown">
                                     <i class="btn dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-expanded="true">
@@ -56,25 +54,12 @@
             </div>
 
             <div class="inner cover">
-                <div ng-show="currentUser" ng-cloak>
-                    Welcome {{currentUser.username}}
-
-                </div>
-                <div ng-show="!currentUser" ng-cloak>
-                    <form class="form-signin" ng-submit="login(credentials)">
-                        <h2 class="form-signin-heading">Please sign in</h2>
-                        <label for="inputEmail" class="sr-only">Email address</label>
-                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="credentials.email" required="" autofocus="">
-                        <label for="inputPassword" class="sr-only">Password</label>
-                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="credentials.password" required="">
-
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="remember-me"> Remember me
-                            </label>
-                        </div>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    </form>
+                <h1 class="cover-heading">hassle free tool rental</h1>
+                <p class="lead">Love your neighbour and rely on each other on tool sharing</p>
+                <div class="btn-group">
+                    <div><a href="borrow.html" class="btn btn-lg btn-primary btn-block">Borrow tools</a></div>
+                    <br/>
+                    <div><a href="lend.html" class="btn btn-lg btn-primary btn-block">Lend tools</a></div>
                 </div>
             </div>
 
@@ -93,9 +78,9 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="js/login.js"></script>
-</body>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<script src="../js/borrowModule.js"></script>
+<script src="../js/ItemControllers.js"></script></body>
 </html>
