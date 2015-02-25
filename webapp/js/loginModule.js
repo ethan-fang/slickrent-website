@@ -1,6 +1,6 @@
-var loginApp = angular.module('login', []);
+var loginModule = angular.module('loginModule', []);
 
-loginApp.constant('AUTH_EVENTS', {
+loginModule.constant('AUTH_EVENTS', {
     loginSuccess: 'auth-login-success',
     loginFailed: 'auth-login-failed',
     logoutSuccess: 'auth-logout-success',
@@ -9,7 +9,7 @@ loginApp.constant('AUTH_EVENTS', {
     notAuthorized: 'auth-not-authorized'
 });
 
-loginApp.service('Session', function () {
+loginModule.service('Session', function () {
     this.create = function(sessionId, userId, userRole) {
         this.id = sessionId;
         this.userId = userId;
@@ -25,64 +25,91 @@ loginApp.service('Session', function () {
 });
 
 
-loginApp.factory('authService', ['$http', 'Session', function authServiceFactory($http, Session) {
-    var authService = {};
+loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'Session', 'AUTH_EVENTS',
+    function($http, $window, $log, $rootScope, Session, AUTH_EVENTS) {
+        var authService = {};
 
-    authService.login = function(credentials) {
-        return $http({
-                method: 'POST',
-                url: SERVICE_HOST + 'user/signin?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
-                header: {
-                    'Content-Type': 'applicaiton/json'
-                },
-                data: {
-                    'username': credentials.email,
-                    'password': credentials.password
-                }
-            })
-            .then(function(res) {
-                Session.create(res.data.user.id, res.data.user.accessToken, 'role');
-                return res.data.user;
-            });
-    };
+        authService.login = function(credentials) {
+            return $http({
+                    method: 'POST',
+                    url: SERVICE_HOST + 'user/signin?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                    header: {
+                        'Content-Type': 'applicaiton/json'
+                    },
+                    data: {
+                        'username': credentials.email,
+                        'password': credentials.password
+                    }
+                })
+                .then(function (response) {
+                    Session.create(response.data.user.id, response.data.user.accessToken, 'role');
+                    $window.sessionStorage.setItem('currentUser', JSON.stringify(response.data.user));
 
-    authService.isAuthenticated = function() {
-        return !!Session.userId;
-    };
+                    //on login success, broadcast
+                    $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                }, function () {
+                    //on login fail, broadcast
+                    $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+                });
+        };
 
-    authService.isAuthorized = function(authorizedRoles) {
-        if (! angular.isArray(authorizedRoles)) {
-            authorizedRoles = [authorizedRoles];
+        authService.logout = function() {
+            $log.info('logout from authservice');
+            Session.destroy();
+            $window.sessionStorage.removeItem('currentUser');
+
+            $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
         }
-        return (authService.isAuthenticated() && authorizedRoles.indexOf(Session.userRole) !== -1);
-    };
 
-    return authService;
+        authService.isAuthenticated = function() {
+            return !!Session.userId;
+        };
+
+        authService.isAuthorized = function(authorizedRoles) {
+            if (! angular.isArray(authorizedRoles)) {
+                authorizedRoles = [authorizedRoles];
+            }
+            return (authService.isAuthenticated() && authorizedRoles.indexOf(Session.userRole) !== -1);
+        };
+
+        return authService;
 
 }]);
 
 
-loginApp.controller('LoginController', ['$scope', '$rootScope', '$log', '$window', 'AUTH_EVENTS', 'authService',
-    function($scope, $rootScope, $log, $window, AUTH_EVENTS, authService){
+loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$window', 'AUTH_EVENTS', 'authService', 'Session',
+    function($scope, $rootScope, $log, $window, AUTH_EVENTS, authService, Session){
 
-    $scope.credentials = {
-        email: '',
-        password: ''
-    };
+        var setCurrentUserFromSession = function() {
+            var userJson = $window.sessionStorage.getItem('currentUser');
 
-    $scope.currentUser = JSON.parse($window.sessionStorage.getItem('currentUser'));
+            if(userJson) {
+                $scope.currentUser = JSON.parse(userJson);
+            }
+        };
 
-    $scope.login = function (credentials) {
-        authService.login(credentials).then(function (user) {
-            $window.sessionStorage.setItem('currentUser', JSON.stringify(user));
-            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-            $scope.setCurrentUser(user);
-        }, function () {
-            $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+        $scope.credentials = {
+            email: '',
+            password: ''
+        };
+
+        setCurrentUserFromSession();
+
+        $scope.login = function (credentials) {
+            authService.login(credentials);
+        };
+
+        $scope.logout = function() {
+            authService.logout();
+        }
+
+        $scope.$on(AUTH_EVENTS.loginSuccess, function() {
+            setCurrentUserFromSession()
         });
-    };
 
-    $scope.setCurrentUser = function(user) {
-        $scope.currentUser = user;
+        $scope.$on(AUTH_EVENTS.logoutSuccess, function() {
+            $scope.currentUser = null;
+        });
+
     }
-}]);
+]);

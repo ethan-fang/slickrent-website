@@ -37,7 +37,7 @@ lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
         return itemToUpload;
     };
 
-    this.uploadImage = function(file, imageUuid, uploadUrl, $scope){
+    this.uploadImage = function(file, imageUuid, uploadUrl, currentUser){
         var fd = new FormData();
         fd.append('image', file);
         fd.append('imageUuid', imageUuid);
@@ -45,11 +45,11 @@ lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
             transformRequest: angular.identity,
             headers: {
                 'Content-Type': undefined,
-                'Authorization': 'bearer c2hhcmUyMDE0LTEyLTE0VDE3OjU3OjMzLjI5MloxNTE4ODgwMjU1'}
+                'Authorization': 'bearer ' + currentUser.accessToken}
             });
     };
 
-    this.uploadItem = function(item, imageUuids, uploadUrl, $scope) {
+    this.uploadItem = function(item, imageUuids, uploadUrl, currentUser) {
         var itemToUpload = prepareItem(item, imageUuids);
 
         $log.info(itemToUpload);
@@ -58,14 +58,14 @@ lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
             transformRequest: angular.identity,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'bearer c2hhcmUyMDE0LTEyLTE0VDE3OjU3OjMzLjI5MloxNTE4ODgwMjU1'}
+                'Authorization': 'bearer ' + currentUser.accessToken}
         });
     };
 
 
 }]);
 
-lendApp.controller('UploadController', ['$scope', '$log', 'itemUpload', function($scope, $log, itemUpload){
+lendApp.controller('UploadController', ['$scope', '$log', '$window', 'itemUpload', 'AUTH_EVENTS', function($scope, $log, $window, itemUpload, AUTH_EVENTS){
     var getUuid = function() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -73,16 +73,31 @@ lendApp.controller('UploadController', ['$scope', '$log', 'itemUpload', function
         });
     };
 
+    var setCurrentUserFromSession = function() {
+        var userJson = $window.sessionStorage.getItem('currentUser');
+
+        if(userJson) {
+            $scope.currentUser = JSON.parse(userJson);
+        }
+    };
+
     $scope.uploadSuccess = false;
     $scope.uploadItem = function(item) {
+
+        if(!$scope.currentUser) {
+            $log.info("please login first before uploading");
+            return;
+        }
+
+        var currentUser = $scope.currentUser;
         var file = item.image;
         var imageUuid = getUuid();
         var uploadUrl = SERVICE_HOST + "image?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc";
-        itemUpload.uploadImage(file, imageUuid, uploadUrl, $scope)
+        itemUpload.uploadImage(file, imageUuid, uploadUrl, currentUser)
             .then(function(response) {
                 $log.info("image upload succeeded");
-                var itemUploadUrl = SERVICE_HOST + 'shareitem/7ffc2295-6875-4f40-bc65-827b8fd4535b?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc';
-                return itemUpload.uploadItem(item, [imageUuid], itemUploadUrl, $scope);
+                var itemUploadUrl = SERVICE_HOST + 'shareitem/' + currentUser.id + '?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc';
+                return itemUpload.uploadItem(item, [imageUuid], itemUploadUrl, currentUser);
             })
             .then(function(response) {
                 $log.info("item upload succeeded");
@@ -90,4 +105,15 @@ lendApp.controller('UploadController', ['$scope', '$log', 'itemUpload', function
                 $scope.item = null;
             });
     };
+
+    setCurrentUserFromSession();
+
+    $scope.$on(AUTH_EVENTS.loginSuccess, function() {
+        setCurrentUserFromSession()
+    });
+
+    $scope.$on(AUTH_EVENTS.logoutSuccess, function(){
+        $scope.currentUser = null;
+    });
+
 }]);

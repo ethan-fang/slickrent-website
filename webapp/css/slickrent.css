@@ -9,6 +9,16 @@
 .voffset8 { margin-top: 100px; }
 .voffset9 { margin-top: 150px; }
 
+.voffset-bottom  { margin-bottom: 2px; }
+.voffset1-bottom { margin-bottom: 5px; }
+.voffset2-bottom { margin-bottom: 10px; }
+.voffset3-bottom { margin-bottom: 15px; }
+.voffset4-bottom { margin-bottom: 30px; }
+.voffset5-bottom { margin-bottom: 40px; }
+.voffset6-bottom { margin-bottom: 60px; }
+.voffset7-bottom { margin-bottom: 80px; }
+.voffset8-bottom { margin-bottom: 100px; }
+.voffset9-bottom { margin-bottom: 150px; }
 /*
   Allow angular.js to be loaded in body, hiding cloaked elements until
   templates compile.  The !important is important given that there may be

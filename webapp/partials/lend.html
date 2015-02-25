@@ -3,9 +3,15 @@
     <h1 class="cover-heading">lend your tool</h1>
     <br /><br />
 
+
+    <div ng-show="!currentUser" ng-cloak class="alert alert-info alert-dismissible" role="alert">Please login before you upload any item!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
     <div ng-show="uploadSuccess" ng-cloak class="alert alert-success alert-dismissible" role="alert">Your item has been uploaded!
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     </div>
+
 
     <form class="form-horizontal" name="itemForm" >
         <div class="form-group">
