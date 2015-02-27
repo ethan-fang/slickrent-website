@@ -2,23 +2,21 @@
     <div class="inner">
         <h3 class="masthead-brand"><a href="#/index">Slickrent</a></h3>
         <nav>
-            <ul class="nav masthead-nav">
-                <li><a href="#/index">Home</a></li>
-                <li><a href="#/lend">Lend</a></li>
-                <li><a href="#/borrow">Borrow</a></li>
-                <!--<li><a href="#/login">Login</a></li>-->
-                <li ng-show="!currentUser" ng-cloak><a href="#/login">Login</a></li>
-                <li ng-show="currentUser" ng-cloak>
+            <ul class="nav masthead-nav" ng-init="tab = 1">
+                <li ng-class="{active:tab===1}"><a href="#/index" ng-click="tab=1">Home</a></li>
+                <li ng-class="{active:tab===2}"><a href="#/lend" ng-click="tab=2">Lend</a></li>
+                <li ng-class="{active:tab===3}"><a href="#/borrow" ng-click="tab=3">Borrow</a></li>
+                <li ng-show="!currentUser" ng-cloak ng-class="{active:tab===4}"><a href="#/login" ng-click="tab=4">Login</a></li>
+                <li ng-show="currentUser" ng-cloak >
                     <div class="dropdown">
                         <i class="btn dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-expanded="true">
                             {{currentUser.username}} <span class="caret"></span>
                         </i>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/login" ng-click="logout()">Logout</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/index" ng-click="tab=1;logout()">Logout</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#/login">View profile</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#/my-item">My Items</a></li>
                         </ul>
-
                     </div>
                 </li>
             </ul>

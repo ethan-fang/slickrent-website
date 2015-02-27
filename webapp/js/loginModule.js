@@ -54,11 +54,34 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
         };
 
         authService.logout = function() {
-            $log.info('logout from authservice');
             Session.destroy();
             $window.sessionStorage.removeItem('currentUser');
 
             $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+        }
+
+        authService.signUp = function(signUpInfo) {
+            return $http({
+                method: 'POST',
+                url: SERVICE_HOST + 'user/signup?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                header: {
+                    'Content-Type': 'applicaiton/json'
+                },
+                data: {
+                    'username': signUpInfo.email,
+                    'password': signUpInfo.password
+                }
+            })
+                .then(function (response) {
+                    Session.create(response.data.user.id, response.data.user.accessToken, 'role');
+                    $window.sessionStorage.setItem('currentUser', JSON.stringify(response.data.user));
+
+                    //on login success, broadcast
+                    $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                }, function () {
+                    //on login fail, broadcast
+                    $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+                });
         }
 
         authService.isAuthenticated = function() {
@@ -93,6 +116,11 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$win
             password: ''
         };
 
+        $scope.signUpInfo = {
+            email: '',
+            password: ''
+        }
+
         setCurrentUserFromSession();
 
         $scope.login = function (credentials) {
@@ -102,6 +130,10 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$win
         $scope.logout = function() {
             authService.logout();
         }
+
+        $scope.signUp = function(signUpInfo) {
+            authService.signUp(signUpInfo);
+        };
 
         $scope.$on(AUTH_EVENTS.loginSuccess, function() {
             setCurrentUserFromSession()

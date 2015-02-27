@@ -21,3 +21,7 @@
 .breadcrumb {
     background-color: transparent;
 }
+
+.thumbnail {
+    min-height: 400px;
+}

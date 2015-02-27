@@ -26,6 +26,7 @@ itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$route',
         }
 
         $scope.items = [];
+        $scope.loadMoreText = 'load more ...';
 
         $scope.loadMore = function() {
             $http({
@@ -39,6 +40,9 @@ itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$route',
                 }
             })
             .success(function (response) {
+                if(response.items.length == 0) {
+                    $scope.loadMoreText = "no more items"
+                }
                 $scope.items = $scope.items.concat(response.items);
                 $log.info($scope.items.length);
             });
