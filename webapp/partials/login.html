@@ -6,44 +6,56 @@
     <div ng-show="!currentUser" ng-cloak>
         <h3>Already have an account?</h3>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#signInModal">
-            Sign in
-        </button>
 
-        <!-- sign in Modal -->
-        <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title text-primary" id="signInLabel">Please sign in</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-signin" id="loginForm" ng-submit="login(credentials)">
-                            <label for="inputEmail" class="sr-only">Email address</label>
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address"
-                                   ng-model="credentials.email" required="" autofocus>
-                            <label for="inputPassword" class="sr-only">Password</label>
-                            <input type="password" id="inputPassword" class="form-control" placeholder="Password"
-                                   ng-model="credentials.password" required="">
+        <div id="slickrent-login">
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#signInModal">
+                Sign in
+            </button>
 
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="remember-me"> Remember me
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button form="loginForm" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <!-- sign in Modal -->
+            <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title text-primary" id="signInLabel">Please sign in</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-signin" id="loginForm" ng-submit="login(credentials)">
+                                <label for="inputEmail" class="sr-only">Email address</label>
+                                <input type="email" id="inputEmail" class="form-control" placeholder="Email address"
+                                       ng-model="credentials.email" required="" autofocus>
+                                <label for="inputPassword" class="sr-only">Password</label>
+                                <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                                       ng-model="credentials.password" required="">
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="remember-me"> Remember me
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button form="loginForm" class="btn btn-lg btn-primary btn-block" type="submit">Sign in
+                            </button>
+                        </div>
+
+                        <hr/>
+                        <div id="fb-login" class="voffset5-bottom">
+                            <button type="button" class="btn btn-primary btn-lg" ng-click="fbLogin()">
+                                Sign in to facebook
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <hr class="voffset5 voffset5-bottom"/>
+
 
         <h3>Create a new account?</h3>
         <!-- Button trigger modal -->
@@ -73,7 +85,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button form="signUpForm" class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+                        <button form="signUpForm" class="btn btn-lg btn-primary btn-block" type="submit">Sign up
+                        </button>
                     </div>
                 </div>
             </div>

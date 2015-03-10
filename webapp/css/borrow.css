@@ -1,5 +1,7 @@
 .scroll-row {
-    overflow: scroll;
+    overflow: auto;
+    height: 400px;
+    padding: 0 5px;
 }
 
 #show-more {

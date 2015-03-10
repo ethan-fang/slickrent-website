@@ -1,4 +1,21 @@
-var loginModule = angular.module('loginModule', []);
+var loginModule = angular.module('loginModule', ['ngFacebook']);
+
+
+// setup facebook login
+loginModule
+.config( function($facebookProvider) {
+   $facebookProvider.setAppId("770792652979234")
+
+})
+.run(function($rootScope) {
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+});
 
 loginModule.constant('AUTH_EVENTS', {
     loginSuccess: 'auth-login-success',
@@ -40,16 +57,6 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
                         'username': credentials.email,
                         'password': credentials.password
                     }
-                })
-                .then(function (response) {
-                    Session.create(response.data.user.id, response.data.user.accessToken, 'role');
-                    $window.sessionStorage.setItem('currentUser', JSON.stringify(response.data.user));
-
-                    //on login success, broadcast
-                    $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-                }, function () {
-                    //on login fail, broadcast
-                    $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
                 });
         };
 
@@ -58,7 +65,7 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
             $window.sessionStorage.removeItem('currentUser');
 
             $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
-        }
+        };
 
         authService.signUp = function(signUpInfo) {
             return $http({
@@ -71,18 +78,24 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
                     'username': signUpInfo.email,
                     'password': signUpInfo.password
                 }
-            })
-                .then(function (response) {
-                    Session.create(response.data.user.id, response.data.user.accessToken, 'role');
-                    $window.sessionStorage.setItem('currentUser', JSON.stringify(response.data.user));
+            });
+        };
 
-                    //on login success, broadcast
-                    $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-                }, function () {
-                    //on login fail, broadcast
-                    $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-                });
-        }
+
+        authService.socialLogin = function(loginInfo) {
+            return $http({
+                method: 'POST',
+                url: SERVICE_HOST + 'user/social-login?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                header: {
+                    'Content-Type': 'applicaiton/json'
+                },
+                data: {
+                    'username': loginInfo.username,
+                    'token': loginInfo.token,
+                    'loginPlatform': 'FB'
+                }
+            });
+        };
 
         authService.isAuthenticated = function() {
             return !!Session.userId;
@@ -100,8 +113,8 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
 }]);
 
 
-loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$window', 'AUTH_EVENTS', 'authService', 'Session',
-    function($scope, $rootScope, $log, $window, AUTH_EVENTS, authService, Session){
+loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$window', 'AUTH_EVENTS', 'authService', 'Session', '$facebook',
+    function($scope, $rootScope, $log, $window, AUTH_EVENTS, authService, Session, $facebook){
 
         var setCurrentUserFromSession = function() {
             var userJson = $window.sessionStorage.getItem('currentUser');
@@ -111,6 +124,27 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$win
             }
         };
 
+        var fbRefresh = function() {
+//            $log.info($facebook.getAuthResponse());
+            $facebook.api("/me").then(
+                function(response) {
+                    // response: {id: "10204406685581735", email: "xin_041619@hotmail.com", first_name: "xinxin", gender: "male", last_name: "wang"…}
+
+                    authService.socialLogin({'username': response.name, 'token': $facebook.getAuthResponse().accessToken}).then(function () {
+                        Session.create(response.id, "token", 'role');
+                        $window.sessionStorage.setItem('currentUser', JSON.stringify({'username': response.name, 'email': response.email}));
+
+                        //on login success, broadcast
+                        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                    });
+                },
+                function(err) {
+                    $scope.welcomeMsg = "Please log in";
+                    $log.error("please log in first");
+                });
+        };
+
+
         $scope.credentials = {
             email: '',
             password: ''
@@ -119,20 +153,49 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$win
         $scope.signUpInfo = {
             email: '',
             password: ''
-        }
+        };
 
         setCurrentUserFromSession();
 
         $scope.login = function (credentials) {
-            authService.login(credentials);
+            authService
+                .login(credentials)
+                .then(function (response) {
+                    Session.create(response.data.user.id, response.data.user.accessToken, 'role');
+                    $window.sessionStorage.setItem('currentUser', JSON.stringify(response.data.user));
+
+                    //on login success, broadcast
+                    $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                }, function () {
+                    //on login fail, broadcast
+                    $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+                });
         };
+
+        $scope.fbLogin = function() {
+            $facebook.login().then(function() {
+                fbRefresh();
+            });
+        };
+
 
         $scope.logout = function() {
             authService.logout();
-        }
+        };
 
         $scope.signUp = function(signUpInfo) {
-            authService.signUp(signUpInfo);
+            authService
+                .signUp(signUpInfo)
+                .then(function (response) {
+                    Session.create(response.data.user.id, response.data.user.accessToken, 'role');
+                    $window.sessionStorage.setItem('currentUser', JSON.stringify(response.data.user));
+
+                    //on login success, broadcast
+                    $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                }, function () {
+                    //on login fail, broadcast
+                    $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+                });
         };
 
         $scope.$on(AUTH_EVENTS.loginSuccess, function() {
