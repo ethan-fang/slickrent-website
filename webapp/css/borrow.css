@@ -20,6 +20,11 @@
     color: black;
 }
 
+.text-blue {
+    color: #337ab7;
+}
+
+
 .breadcrumb {
     background-color: transparent;
 }

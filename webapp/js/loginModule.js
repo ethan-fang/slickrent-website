@@ -4,7 +4,11 @@ var loginModule = angular.module('loginModule', ['ngFacebook']);
 // setup facebook login
 loginModule
 .config( function($facebookProvider) {
-   $facebookProvider.setAppId("770792652979234")
+        // main app
+        // $facebookProvider.setAppId("770792652979234")
+
+        // localhost test app
+        $facebookProvider.setAppId("832332383491927")
 
 })
 .run(function($rootScope) {
@@ -113,8 +117,8 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
 }]);
 
 
-loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$window', 'AUTH_EVENTS', 'authService', 'Session', '$facebook',
-    function($scope, $rootScope, $log, $window, AUTH_EVENTS, authService, Session, $facebook){
+loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$window', 'AUTH_EVENTS', 'authService', 'Session', '$facebook', '$location',
+    function($scope, $rootScope, $log, $window, AUTH_EVENTS, authService, Session, $facebook, $location){
 
         var setCurrentUserFromSession = function() {
             var userJson = $window.sessionStorage.getItem('currentUser');
@@ -199,7 +203,10 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$win
         };
 
         $scope.$on(AUTH_EVENTS.loginSuccess, function() {
-            setCurrentUserFromSession()
+            setCurrentUserFromSession();
+
+            // redirect to the homepage
+            $location.path('#/home')
         });
 
         $scope.$on(AUTH_EVENTS.logoutSuccess, function() {

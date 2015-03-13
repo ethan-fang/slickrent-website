@@ -1,81 +1,82 @@
 <div class="inner cover" ng-controller = "UploadController">
-    <br /><br />
-    <h1 class="cover-heading">lend your tool</h1>
-    <br /><br />
+    <h1 class="cover-heading voffset5-bottom">lend your tool</h1>
 
 
-    <div ng-show="!currentUser" ng-cloak class="alert alert-info alert-dismissible" role="alert">Please login before you upload any item!
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div ng-show="!currentUser" ng-cloak class="panel panel-info">
+        <div class="panel-body text-black">
+            Please login before you upload any item! <a href="#/login" ng-click="tab=4">Login</a></li>
+        </div>
     </div>
 
-    <div ng-show="uploadSuccess" ng-cloak class="alert alert-success alert-dismissible" role="alert">Your item has been uploaded!
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div ng-show="currentUser" ng-cloak class="panel panel-body text-black" role="alert">
+        <div ng-show="uploadSuccess" ng-cloak class="alert alert-success alert-dismissible" role="alert">Your item has been uploaded!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+        <form class="form-horizontal" name="itemForm" >
+            <div class="form-group">
+                <label for="itemName" class="col-md-2 control-label">Name:</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="itemName" placeholder="name" name="name" ng-model="item.name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itemDescription" class="col-md-2 control-label">Description:</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="itemDescription" placeholder="description" name="description" ng-model="item.description" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itemPrice" class="col-md-2 control-label">Price/Hour (USD$):</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="itemPrice" placeholder="price" name="price" ng-model="item.price" required>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="rentalStartTime" class="col-md-2 control-label">rental start:</label>
+                <div class="col-md-10">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" id="start-period" role="button" data-toggle="dropdown" data-target="#">
+                            <div class="input-group"><input  id="rentalStartTime" type="text" class="form-control" data-ng-model="item.rentalStart" required>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="item.rentalStart" data-datetimepicker-config="{ dropdownSelector: '#start-period', minView: 'hour' }"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="rentalEndTime" class="col-md-2 control-label">rental end: </label>
+                <div class="col-md-10">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" id="end-period" role="button" data-toggle="dropdown" data-target="#">
+                            <div class="input-group"><input  id="rentalEndTime" type="text" class="form-control" data-ng-model="item.rentalEnd" required>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="item.rentalEnd" data-datetimepicker-config="{ dropdownSelector: '#end-period', minView: 'hour'}"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="itemImage" class="col-md-2 control-label">Image:</label>
+                <div class="col-md-10">
+                    <input type="file" id="itemImage" name="image" file-model="item.image" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-8 col-md-4"><input type="submit" class="btn btn-primary btn-block" ng-click="uploadItem(item)" value="Upload" /></div>
+            </div>
+        </form>
+
     </div>
-
-
-    <form class="form-horizontal" name="itemForm" >
-        <div class="form-group">
-            <label for="itemName" class="col-md-2 control-label">Name:</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" id="itemName" placeholder="name" name="name" ng-model="item.name" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="itemDescription" class="col-md-2 control-label">Description:</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" id="itemDescription" placeholder="description" name="description" ng-model="item.description" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="itemPrice" class="col-md-2 control-label">Price/Hour (USD$):</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" id="itemPrice" placeholder="price" name="price" ng-model="item.price" required>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label for="rentalStartTime" class="col-md-2 control-label">rental start:</label>
-            <div class="col-md-10">
-                <div class="dropdown">
-                    <a class="dropdown-toggle" id="start-period" role="button" data-toggle="dropdown" data-target="#">
-                        <div class="input-group"><input  id="rentalStartTime" type="text" class="form-control" data-ng-model="item.rentalStart" required>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <datetimepicker data-ng-model="item.rentalStart" data-datetimepicker-config="{ dropdownSelector: '#start-period', minView: 'hour' }"/>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="rentalEndTime" class="col-md-2 control-label">rental end: </label>
-            <div class="col-md-10">
-                <div class="dropdown">
-                    <a class="dropdown-toggle" id="end-period" role="button" data-toggle="dropdown" data-target="#">
-                        <div class="input-group"><input  id="rentalEndTime" type="text" class="form-control" data-ng-model="item.rentalEnd" required>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <datetimepicker data-ng-model="item.rentalEnd" data-datetimepicker-config="{ dropdownSelector: '#end-period', minView: 'hour'}"/>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="itemImage" class="col-md-2 control-label">Image:</label>
-            <div class="col-md-10">
-                <input type="file" id="itemImage" name="image" file-model="item.image" required>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-8 col-md-4"><input type="submit" class="btn btn-primary btn-block" ng-click="uploadItem(item)" value="Upload" /></div>
-        </div>
-    </form>
-
 </div>
