@@ -92,11 +92,11 @@ lendApp.controller('UploadController', ['$scope', '$log', '$window', 'itemUpload
         var currentUser = $scope.currentUser;
         var file = item.image;
         var imageUuid = getUuid();
-        var uploadUrl = SERVICE_HOST + "image?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc";
+        var uploadUrl = SERVICE_HOST_API_URL + "image?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc";
         itemUpload.uploadImage(file, imageUuid, uploadUrl, currentUser)
             .then(function(response) {
                 $log.info("image upload succeeded");
-                var itemUploadUrl = SERVICE_HOST + 'shareitem/' + currentUser.id + '?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc';
+                var itemUploadUrl = SERVICE_HOST_API_URL + 'shareitem/' + currentUser.id + '?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc';
                 return itemUpload.uploadItem(item, [imageUuid], itemUploadUrl, currentUser);
             })
             .then(function(response) {

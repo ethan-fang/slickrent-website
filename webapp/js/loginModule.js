@@ -53,7 +53,7 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
         authService.login = function(credentials) {
             return $http({
                     method: 'POST',
-                    url: SERVICE_HOST + 'user/signin?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                    url: SERVICE_HOST_API_URL + 'user/signin?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
                     header: {
                         'Content-Type': 'applicaiton/json'
                     },
@@ -74,7 +74,7 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
         authService.signUp = function(signUpInfo) {
             return $http({
                 method: 'POST',
-                url: SERVICE_HOST + 'user/signup?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                url: SERVICE_HOST_API_URL + 'user/signup?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
                 header: {
                     'Content-Type': 'applicaiton/json'
                 },
@@ -89,7 +89,7 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
         authService.socialLogin = function(loginInfo) {
             return $http({
                 method: 'POST',
-                url: SERVICE_HOST + 'user/social-login?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                url: SERVICE_HOST_API_URL + 'user/social-login?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
                 header: {
                     'Content-Type': 'applicaiton/json'
                 },

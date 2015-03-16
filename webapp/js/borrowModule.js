@@ -1,4 +1,4 @@
-var borrowApp = angular.module('borrow', ['ngRoute', 'itemControllers']);
+var borrowApp = angular.module('borrow', ['ngRoute', 'itemControllers', 'infinite-scroll']);
 
 borrowApp.config(['$routeProvider',
     function($routeProvider) {

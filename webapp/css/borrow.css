@@ -1,11 +1,6 @@
 .scroll-row {
     overflow: auto;
-    height: 400px;
     padding: 0 5px;
-}
-
-#show-more {
-    margin-bottom: 100px;
 }
 
 .mastfoot {
@@ -16,13 +11,6 @@
     height: 200px;
 }
 
-.text-black {
-    color: black;
-}
-
-.text-blue {
-    color: #337ab7;
-}
 
 
 .breadcrumb {

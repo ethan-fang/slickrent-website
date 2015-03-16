@@ -1,6 +1,6 @@
-//var SERVICE_HOST = "http://localhost:8080/api/"
-//var SERVICE_HOST = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/"
-var SERVICE_HOST = "http://ec2-54-173-114-114.compute-1.amazonaws.com:9001/api/"
+//var SERVICE_HOST_API_URL = "http://localhost:8080/api/"
+//var SERVICE_HOST_API_URL = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/"
+var SERVICE_HOST_API_URL = "http://54.84.57.3:9001/api/"
 
 
 var slickrentApp = angular.module('slickrent',

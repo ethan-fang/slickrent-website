@@ -1,6 +1,6 @@
 <div class="masthead clearfix" ng-controller="HeaderController">
     <div class="inner">
-        <h3 class="masthead-brand"><a href="#/home">Slickrent</a></h3>
+        <h3 class="masthead-brand"><a href="#/home" ng-click="tab=1">Slickrent</a></h3>
         <nav>
             <ul class="nav masthead-nav" ng-init="tab = 1">
                 <li ng-class="{active:tab===1}"><a href="#/home" ng-click="tab=1">Home</a></li>

@@ -5,7 +5,7 @@ itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', 
         var itemId = $routeParams.itemId;
 
         $http({
-            url: SERVICE_HOST + "shareitem/" + itemId,
+            url: SERVICE_HOST_API_URL + "shareitem/" + itemId,
             method: "GET",
             params: {
                 clientId: "e7568b2c-2c0f-480e-9e34-08f9a4b807dc"
@@ -25,12 +25,16 @@ itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$route',
             userId = angular.fromJson(userJson).id;
         }
 
+        $scope.serviceHostApiUrl = SERVICE_HOST_API_URL;
         $scope.items = [];
-        $scope.loadMoreText = 'load more ...';
+        $scope.loadMoreText = '';
+        $scope.loadBusy = false;
 
         $scope.loadMore = function() {
+            $scope.loadBusy = true;
+
             $http({
-                url: SERVICE_HOST + "shareitem",
+                url: SERVICE_HOST_API_URL + "shareitem",
                 method: "GET",
                 params: {
                     clientId: "e7568b2c-2c0f-480e-9e34-08f9a4b807dc",
@@ -41,12 +45,14 @@ itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$route',
             })
             .success(function (response) {
                 if(response.items.length == 0) {
-                    $scope.loadMoreText = "no more items"
+                    $scope.loadMoreText = "no more items";
+                } else {
+                    $scope.loadMoreText = "";
                 }
+                $scope.loadBusy = false;
                 $scope.items = $scope.items.concat(response.items);
                 $log.info($scope.items.length);
             });
         };
-        $scope.loadMore();
     }
 ]);
