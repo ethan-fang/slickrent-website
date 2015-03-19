@@ -1,6 +1,8 @@
-//var SERVICE_HOST_API_URL = "http://localhost:8080/api/"
-//var SERVICE_HOST_API_URL = "https://ec2-54-173-114-114.compute-1.amazonaws.com/api/"
-var SERVICE_HOST_API_URL = "http://54.84.57.3:9001/api/"
+var SERVICE_HOST_API_URL = "http://localhost:8080/api/";
+//var SERVICE_HOST_API_URL = "http://54.84.57.3:9001/api/";
+//var SERVICE_HOST_API_URL = "http://api.slickrent.space:9001/api/";
+
+var CLIENT_ID='e7568b2c-2c0f-480e-9e34-08f9a4b807dc';
 
 
 var slickrentApp = angular.module('slickrent',

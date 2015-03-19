@@ -8,7 +8,7 @@ itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', 
             url: SERVICE_HOST_API_URL + "shareitem/" + itemId,
             method: "GET",
             params: {
-                clientId: "e7568b2c-2c0f-480e-9e34-08f9a4b807dc"
+                clientId: CLIENT_ID
             }
         }).success(function (response) {
                 $scope.item = response.item;
@@ -37,7 +37,7 @@ itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$route',
                 url: SERVICE_HOST_API_URL + "shareitem",
                 method: "GET",
                 params: {
-                    clientId: "e7568b2c-2c0f-480e-9e34-08f9a4b807dc",
+                    clientId: CLIENT_ID,
                     size: 3,
                     offset: $scope.items.length,
                     userId: userId

@@ -5,7 +5,7 @@ var loginModule = angular.module('loginModule', ['ngFacebook']);
 loginModule
 .config( function($facebookProvider) {
         // main app
-        // $facebookProvider.setAppId("770792652979234")
+//        $facebookProvider.setAppId("770792652979234")
 
         // localhost test app
         $facebookProvider.setAppId("832332383491927")
@@ -53,7 +53,7 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
         authService.login = function(credentials) {
             return $http({
                     method: 'POST',
-                    url: SERVICE_HOST_API_URL + 'user/signin?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                    url: SERVICE_HOST_API_URL + 'user/signin?clientId=' + CLIENT_ID,
                     header: {
                         'Content-Type': 'applicaiton/json'
                     },
@@ -74,7 +74,7 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
         authService.signUp = function(signUpInfo) {
             return $http({
                 method: 'POST',
-                url: SERVICE_HOST_API_URL + 'user/signup?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                url: SERVICE_HOST_API_URL + 'user/signup?clientId=' + CLIENT_ID,
                 header: {
                     'Content-Type': 'applicaiton/json'
                 },
@@ -89,7 +89,7 @@ loginModule.factory('authService', ['$http', '$window', '$log', '$rootScope', 'S
         authService.socialLogin = function(loginInfo) {
             return $http({
                 method: 'POST',
-                url: SERVICE_HOST_API_URL + 'user/social-login?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc',
+                url: SERVICE_HOST_API_URL + 'user/social-login?clientId=' + CLIENT_ID,
                 header: {
                     'Content-Type': 'applicaiton/json'
                 },
@@ -129,17 +129,25 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$win
         };
 
         var fbRefresh = function() {
-//            $log.info($facebook.getAuthResponse());
             $facebook.api("/me").then(
-                function(response) {
+                function(fbResponse) {
                     // response: {id: "10204406685581735", email: "xin_041619@hotmail.com", first_name: "xinxin", gender: "male", last_name: "wang"…}
 
-                    authService.socialLogin({'username': response.name, 'token': $facebook.getAuthResponse().accessToken}).then(function () {
-                        Session.create(response.id, "token", 'role');
-                        $window.sessionStorage.setItem('currentUser', JSON.stringify({'username': response.name, 'email': response.email}));
+                    authService
+                        .socialLogin({'username': fbResponse.name, 'token': $facebook.getAuthResponse().accessToken})
+                        .then(function (socialLoginResponse) {
+                            Session.create(fbResponse.id, "token", 'role');
+                            $window.sessionStorage.setItem(
+                                'currentUser',
+                                JSON.stringify({
+                                    'username': fbResponse.name,
+                                    'email': fbResponse.email,
+                                    'accessToken': socialLoginResponse.data.user.accessToken,
+                                    'id': socialLoginResponse.data.user.id
+                                }));
 
-                        //on login success, broadcast
-                        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                            //on login success, broadcast
+                            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
                     });
                 },
                 function(err) {

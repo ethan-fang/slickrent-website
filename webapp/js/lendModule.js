@@ -18,20 +18,33 @@ lendApp.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 
+lendApp.directive('validFile',function(){
+    return {
+        link:function(scope,el,attrs,ngModel){
+            el.bind('change',function(){
+                scope.$apply(function(){
+                    ngModel.$setViewValue(el.val());
+                    ngModel.$render();
+                });
+            });
+        }
+    }
+});
+
 lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
 
-    var prepareItem = function(itemForm, imageUuids) {
+    var prepareItem = function(rawItem, imageUuids) {
         var itemToUpload = {};
-        itemToUpload.itemName = itemForm.name;
-        itemToUpload.itemDescription = itemForm.description;
-        itemToUpload.pricePerHour = itemForm.price;
+        itemToUpload.itemName = rawItem.name;
+        itemToUpload.itemDescription = rawItem.description;
+        itemToUpload.pricePerHour = rawItem.price;
         itemToUpload.images = imageUuids;
         itemToUpload.quantity = 1;
         itemToUpload.rentalPeriods = [{
             "lowerBoundType": "CLOSED",
-            "lowerEndpoint": itemForm.rentalStart.toISOString(),
+            "lowerEndpoint": rawItem.rentalStart.toISOString(),
             "upperBoundType": "CLOSED",
-            "upperEndpoint": itemForm.rentalEnd.toISOString()
+            "upperEndpoint": rawItem.rentalEnd.toISOString()
         }];
 
         return itemToUpload;
@@ -80,9 +93,20 @@ lendApp.controller('UploadController', ['$scope', '$log', '$window', 'itemUpload
             $scope.currentUser = JSON.parse(userJson);
         }
     };
+    setCurrentUserFromSession();
 
+
+    $scope.uploading = false;
     $scope.uploadSuccess = false;
-    $scope.uploadItem = function(item) {
+    $scope.uploadItem = function(item, isValid) {
+
+        if(!isValid) {
+            $log.error("form is not valid");
+            return;
+        }
+
+        $log.info(item);
+        $scope.uploading = true;
 
         if(!$scope.currentUser) {
             $log.info("please login first before uploading");
@@ -90,23 +114,23 @@ lendApp.controller('UploadController', ['$scope', '$log', '$window', 'itemUpload
         }
 
         var currentUser = $scope.currentUser;
-        var file = item.image;
+        var file = $scope.item.image;
         var imageUuid = getUuid();
-        var uploadUrl = SERVICE_HOST_API_URL + "image?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc";
-        itemUpload.uploadImage(file, imageUuid, uploadUrl, currentUser)
+        var imageUploadUrl = SERVICE_HOST_API_URL + "image?clientId=" + CLIENT_ID;
+        itemUpload.uploadImage(file, imageUuid, imageUploadUrl, currentUser)
             .then(function(response) {
                 $log.info("image upload succeeded");
-                var itemUploadUrl = SERVICE_HOST_API_URL + 'shareitem/' + currentUser.id + '?clientId=e7568b2c-2c0f-480e-9e34-08f9a4b807dc';
+                var itemUploadUrl = SERVICE_HOST_API_URL + 'shareitem/' + currentUser.id + '?clientId=' + CLIENT_ID;
                 return itemUpload.uploadItem(item, [imageUuid], itemUploadUrl, currentUser);
             })
             .then(function(response) {
                 $log.info("item upload succeeded");
                 $scope.uploadSuccess = true;
                 $scope.item = null;
+                $scope.uploading = false;
             });
     };
 
-    setCurrentUserFromSession();
 
     $scope.$on(AUTH_EVENTS.loginSuccess, function() {
         setCurrentUserFromSession()
