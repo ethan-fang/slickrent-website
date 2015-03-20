@@ -65,15 +65,17 @@ itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', 
 itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$route', '$window',
     function($scope, $http, $log, $route, $window) {
         var userId;
-        if($route.current.filter && $route.current.filter.userSpecific) {
+        if($route.current.additionalParams && $route.current.additionalParams.userSpecific) {
             var userJson = $window.sessionStorage.getItem('currentUser');
             userId = angular.fromJson(userJson).id;
         }
 
         $scope.serviceHostApiUrl = SERVICE_HOST_API_URL;
+
         $scope.items = [];
         $scope.loadMoreText = '';
         $scope.loadBusy = false;
+        $scope.haveMore = true;
 
         $scope.loadMore = function() {
             $scope.loadBusy = true;
@@ -91,6 +93,7 @@ itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$route',
             .success(function (response) {
                 if(response.items.length == 0) {
                     $scope.loadMoreText = "no more items";
+                    $scope.haveMore = false;
                 } else {
                     $scope.loadMoreText = "";
                 }

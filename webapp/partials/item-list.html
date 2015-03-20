@@ -7,7 +7,7 @@
         <div class="voffset3">Search: <input ng-model="searchText" class="text-black"></div>
 
         <div class="row voffset3 well well-lg"
-             infinite-scroll="loadMore()" infinite-scroll-disabled='loadBusy' infinite-scroll-distance='1'>
+             infinite-scroll="loadMore()" infinite-scroll-disabled="loadBusy || !haveMore" infinite-scroll-distance='1'>
 
             <div class="col-sm-6 col-md-4" ng-repeat="item in items | filter:searchText">
                 <div class="thumbnail">
