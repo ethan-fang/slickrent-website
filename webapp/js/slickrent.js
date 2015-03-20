@@ -31,6 +31,10 @@ slickrentApp.config(['$routeProvider',
                 controller: 'ItemListCtrl',
                 filter: {userSpecific: true}
             }).
+            when('/item/:itemId', {
+                templateUrl: 'partials/item-detail.html',
+                controller: 'ItemDetailCtrl'
+            }).
             otherwise({
                 redirectTo: '/home'
             });

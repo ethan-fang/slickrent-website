@@ -1,9 +1,25 @@
-var itemControllers = angular.module('itemControllers', []);
+var itemControllers = angular.module('itemControllers', ['xeditable', 'ui.bootstrap.datetimepicker']);
 
-itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', '$log',
-    function($scope, $routeParams, $http, $log) {
+itemControllers.run(function(editableOptions) {
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+});
+
+
+itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', '$log', '$window',
+    function($scope, $routeParams, $http, $log, $window) {
+        var userId;
+        var userJson = $window.sessionStorage.getItem('currentUser');
+
+        if(userJson) {
+            userId = angular.fromJson(userJson).id;
+        }
+
         var itemId = $routeParams.itemId;
+        $scope.imageUrl = SERVICE_HOST_API_URL;
 
+        $scope.ownItem = false;
+
+        // fetch item on page load
         $http({
             url: SERVICE_HOST_API_URL + "shareitem/" + itemId,
             method: "GET",
@@ -11,9 +27,38 @@ itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', 
                 clientId: CLIENT_ID
             }
         }).success(function (response) {
-                $scope.item = response.item;
-                $log.info($scope.item);
+
+            $log.info(response.item);
+
+            var price = response.item.price? (response.item.price.amount.amount /100) : null;
+            var rentalStart = response.item.rentalPeriods?response.item.rentalPeriods.lowerEndpoint: null;
+            var rentalEnd = response.item.rentalPeriods?response.item.rentalPeriods.upperEndpoint: null;
+
+            $scope.item = {
+                'id': response.item.id,
+                'imageUuids': response.item.imageUuids,
+                'itemDescription': response.item.itemDescription,
+                'itemName': response.item.itemName,
+                'price': price,
+                'rentalStart': rentalStart,
+                'rentalEnd': rentalEnd,
+                'userId': response.item.ownerId
+            }
+
+            $scope.ownItem = ($scope.item.userId === userId);
+            $log.info($scope.item);
         });
+
+
+        $scope.updateItem = function(item) {
+            $log.info(item);
+//            $http.post(uploadUrl, JSON.stringify(item), {
+//                headers: {
+//                    'Content-Type': 'application/json',
+//                    'Authorization': 'bearer ' + currentUser.accessToken}
+//            });
+        };
+
     }
 ]);
 

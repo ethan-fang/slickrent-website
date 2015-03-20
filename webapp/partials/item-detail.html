@@ -1,4 +1,4 @@
-<div class="inner cover voffset9"  ng-controller="ItemListCtrl">
+<div class="inner cover voffset9"  ng-controller="ItemDetailCtrl">
     <div class="row">
     <ol class="breadcrumb breadcrumb-pr pull-left transparent-background">
         <li><a href="#item">Borrow</a></li>
@@ -6,46 +6,97 @@
     </ol>
     </div>
 
-    <h1 class="cover-heading">The tool detail</h1>
-
-    <br/>
-
-
-    <div class="row thumbnail">
-        <div>
-            <a href="#/item/{{item.id}}">
-                <img class="image-thumbnail img-responsive"
-                     ng-src="https://ec2-54-173-114-114.compute-1.amazonaws.com/api/image/{{item.imageUuids[0]}}">
-            </a>
-        </div>
-
-        <div class="panel panel-primary voffset4">
-            <div class="panel-heading">
-                <h3 class="panel-title">Name</h3>
-            </div>
-            <div class="panel-body text-black">
-                {{item.itemName}}
-            </div>
-            <div class="panel-heading">
-                <h3 class="panel-title">Description</h3>
-            </div>
-            <div class="panel-body text-black">
-                {{item.itemDescription}}
-            </div>
-            <div class="panel-heading">
-                <h3 class="panel-title">Price/Hour (USD$)</h3>
-            </div>
-            <div class="panel-body text-black">
-                {{ (item.price.amount.amount/100 | currency:"$") || "N/A" }}
-            </div>
-            <div class="panel-heading">
-                <h3 class="panel-title">Rental period</h3>
-            </div>
-            <div class="panel-body text-black">
-                {{item.rentalPeriod.lowerEndpoint | date:'MM/dd/yyyy @ h:mma'}} -
-                {{item.rentalPeriod.upperEndpoint | date:'MM/dd/yyyy @ h:mma'}}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4">
+                <img class="image-thumbnail img-responsive" ng-src="{{imageUrl}}image/{{item.imageUuids[0]}}">
             </div>
 
+            <!-- editable display -->
+            <div class="col-xs-8" ng-show="ownItem">
+                <div class="panel panel-body text-black">
+                    <div class="row">
+                        <label class="col-xs-4">Name: </label>
+                        <a class="col-xs-8" href="#" editable-text="item.itemName">{{ item.itemName || "empty" }}</a>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-xs-4">Description: </label>
+                        <a class="col-xs-8" href="#" editable-text="item.itemDescription">{{ item.itemDescription || "empty" }}</a>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-xs-4">Price/Hour (USD$): </label>
+                        <a class="col-xs-8" href="#" editable-text="item.price" >
+                            {{ (item.price | currency: "$") || 'N/A' }}
+                        </a>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-xs-4">Rental start: </label>
+                        <div class="dropdown col-xs-8">
+                            <a class="dropdown-toggle editable-click" id="rental-start" role="button" data-toggle="dropdown" data-target="#" href="">
+                                {{ (item.rentalStart | date:'MM/dd/yyyy @ h:mma') || 'N/A' }}
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="rental-start">
+                                <datetimepicker data-ng-model="item.rentalStart"
+                                                data-datetimepicker-config="{ dropdownSelector: '#end-period', minView: 'hour' }"></datetimepicker>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <label class="col-xs-4">Rental end: </label>
+                        <div class="dropdown col-xs-8">
+                            <a class="dropdown-toggle editable-click" id="rental-end" role="button" data-toggle="dropdown" data-target="#" href="">
+                                {{ (item.rentalEnd | date:'MM/dd/yyyy @ h:mma') || 'N/A' }}
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="rental-end">
+                                <datetimepicker data-ng-model="item.rentalEnd"
+                                                data-datetimepicker-config="{ dropdownSelector: '#end-period', minView: 'hour' }"></datetimepicker>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-offset-8 col-xs-4 voffset3">
+                        <button type="submit" class="btn btn-primary btn-block" ng-click="updateItem(item)">update</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- non editable panel for anonymous user -->
+            <div class="col-xs-8" ng-hide="ownItem">
+                <div class="panel panel-body text-black">
+                    <div class="row">
+                        <label class="col-xs-4">Name: </label>
+                        <div class="col-xs-8">{{ item.itemName || "empty" }}</div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-xs-4">Description: </label>
+                        <div class="col-xs-8">{{ item.itemDescription || "empty" }}</div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-xs-4">Price/Hour (USD$): </label>
+                        <div class="col-xs-8"> {{ (item.price | currency: "$") || 'N/A' }} </div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-xs-4">Rental start: </label>
+                        <div class="col-xs-8">{{ (item.rentalStart | date:'MM/dd/yyyy @ h:mma') || 'N/A' }}</div>
+                    </div>
+
+
+                    <div class="row">
+                        <label class="col-xs-4">Rental end: </label>
+                        <div class="col-xs-8">{{ (item.rentalEnd | date:'MM/dd/yyyy @ h:mma') || 'N/A' }}</div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
