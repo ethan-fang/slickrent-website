@@ -5,8 +5,8 @@ itemControllers.run(function(editableOptions) {
 });
 
 
-itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', '$log', '$window',
-    function($scope, $routeParams, $http, $log, $window) {
+itemControllers.controller('ItemDetailCtrl', ['$scope','$stateParams', '$http', '$log', '$window',
+    function($scope, $stateParams, $http, $log, $window) {
         var userId;
         var userJson = $window.sessionStorage.getItem('currentUser');
 
@@ -14,7 +14,7 @@ itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', 
             userId = angular.fromJson(userJson).id;
         }
 
-        var itemId = $routeParams.itemId;
+        var itemId = $stateParams.itemId;
         $scope.imageUrl = SERVICE_HOST_API_URL;
 
         $scope.ownItem = false;
@@ -62,12 +62,11 @@ itemControllers.controller('ItemDetailCtrl', ['$scope','$routeParams', '$http', 
     }
 ]);
 
-itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$route', '$window',
-    function($scope, $http, $log, $route, $window) {
+itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$state', '$window',
+    function($scope, $http, $log, $state, $window) {
         var userId;
-        if($route.current.additionalParams && $route.current.additionalParams.userSpecific) {
-            var userJson = $window.sessionStorage.getItem('currentUser');
-            userId = angular.fromJson(userJson).id;
+        if($state.current.data) {
+            userId = $state.current.data.getCurrentUser($window).id;
         }
 
         $scope.serviceHostApiUrl = SERVICE_HOST_API_URL;

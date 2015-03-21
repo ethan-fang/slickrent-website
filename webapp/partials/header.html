@@ -2,21 +2,21 @@
     <div class="inner">
         <h3 class="masthead-brand"><a href="#/home" ng-click="tab=1">Slickrent</a></h3>
         <nav>
-            <ul class="nav masthead-nav" ng-init="tab = 1">
-                <li ng-class="{active:tab===1}"><a href="#/home" ng-click="tab=1">Home</a></li>
-                <li ng-class="{active:tab===2}"><a href="#/lend" ng-click="tab=2">Lend</a></li>
-                <li ng-class="{active:tab===3}"><a href="#/borrow" ng-click="tab=3">Borrow</a></li>
-                <li ng-show="!currentUser" ng-cloak ng-class="{active:tab===4}"><a href="#/login" ng-click="tab=4">Login</a></li>
-                <li ng-show="currentUser" ng-cloak ng-class="{active:tab===4}">
+            <ul class="nav masthead-nav">
+                <li ui-sref-active="active"><a ui-sref="home">Home</a></li>
+                <li ui-sref-active="active"><a ui-sref="lend">Lend</a></li>
+                <li ui-sref-active="active"><a ui-sref="items">Borrow</a></li>
+                <li ng-show="!currentUser" ui-sref-active="active"><a ui-sref="login" ng-click="tab=4">Login</a></li>
+                <li ng-show="currentUser" ui-sref-active="active">
                     <div class="dropdown">
                         <i class="btn dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-expanded="true">
                             {{currentUser.username}} <span class="caret"></span>
                         </i>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/profile" ng-click="tab=4">View profile</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/my-item" ng-click="tab=4">My Items</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ui-sref="profile">View profile</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ui-sref="my-items">My Items</a></li>
                             <li role="presentation" class="divider"></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/home" ng-click="tab=1;logout()">Logout</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ui-sref="home" ng-click="logout()">Logout</a></li>
                         </ul>
                     </div>
                 </li>

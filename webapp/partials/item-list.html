@@ -11,13 +11,13 @@
 
             <div class="col-sm-6 col-md-4" ng-repeat="item in items | filter:searchText">
                 <div class="thumbnail">
-                    <a href="#/item/{{item.id}}">
+                    <a ui-sref="items-detail({itemId: item.id})">
                         <img class="image-thumbnail img-responsive" ng-src = "{{serviceHostApiUrl}}image/{{item.imageUuids[0]}}" >
                     </a>
                     <div class="caption scroll-row">
                         <h3  class="">{{item.itemName}}</h3>
                         <p>{{item.itemDescription}}</p>
-                        <p><a href="#/item/{{item.id}}" class="btn btn-primary" role="button">View Detail</a></p>
+                        <p><a ui-sref="items-detail({itemId: item.id})" class="btn btn-primary" role="button">View Detail</a></p>
                     </div>
                 </div>
             </div>

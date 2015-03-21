@@ -18,17 +18,21 @@ lendApp.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 
-lendApp.directive('validFile',function(){
+lendApp.directive('validFile', function () {
     return {
-        link:function(scope,el,attrs,ngModel){
-            el.bind('change',function(){
-                scope.$apply(function(){
-                    ngModel.$setViewValue(el.val());
+        require: 'ngModel',
+        link: function (scope, el, attrs, ngModel) {
+            ngModel.$render = function () {
+                ngModel.$setViewValue(el.val());
+            };
+
+            el.bind('change', function () {
+                scope.$apply(function () {
                     ngModel.$render();
                 });
             });
         }
-    }
+    };
 });
 
 lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
@@ -114,7 +118,7 @@ lendApp.controller('UploadController', ['$scope', '$log', '$window', 'itemUpload
         }
 
         var currentUser = $scope.currentUser;
-        var file = $scope.item.image;
+        var file = $scope.item.imageContent;
         var imageUuid = getUuid();
         var imageUploadUrl = SERVICE_HOST_API_URL + "image?clientId=" + CLIENT_ID;
         itemUpload.uploadImage(file, imageUuid, imageUploadUrl, currentUser)
@@ -127,6 +131,11 @@ lendApp.controller('UploadController', ['$scope', '$log', '$window', 'itemUpload
                 $log.info("item upload succeeded");
                 $scope.uploadSuccess = true;
                 $scope.item = null;
+                $scope.itemForm.$setPristine();
+                $scope.uploading = false;
+            }, function(response) {
+                $log.info("item upload failed");
+                $scope.uploadSuccess = false;
                 $scope.uploading = false;
             });
     };

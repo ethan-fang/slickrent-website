@@ -4,7 +4,7 @@
 
     <div ng-show="!currentUser" ng-cloak class="panel panel-info">
         <div class="panel-body text-black">
-            Please login before you upload any item! <a href="#/login" ng-click="tab=4">Login</a></li>
+            Please login before you upload any item! <a ui-sref="login" ng-click="tab=4">Login</a></li>
         </div>
     </div>
 
@@ -18,7 +18,6 @@
                 <label for="itemName" class="col-md-2 control-label">Name:</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="itemName" placeholder="name" name="name" ng-model="item.name" required>
-                    <p ng-show="itemForm.name.$invalid && !itemForm.name.$pristine" class="help-block">You name is required.</p>
                 </div>
             </div>
             <div class="form-group">
@@ -72,14 +71,13 @@
             <div class="form-group">
                 <label for="itemImage" class="col-md-2 control-label">Image:</label>
                 <div class="col-md-10">
-                    <input id="itemImage" ng-model="item.image" file-model="item.image" name="image" type="file" accept="image/*" valid-file required />
-                    <p ng-show="itemForm.image.$invalid && !itemForm.image.$pristine" class="help-block">Please upload an image for your item.</p>
+                    <input id="itemImage" ng-model="item.image" file-model="item.imageContent" name="image" type="file" accept="image/*" valid-file required />
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-offset-8 col-md-4">
-                    <button type="submit" class="btn btn-primary btn-block" ng-disabled="itemForm.$invalid">{{uploading ? 'uploading...' : 'upload'}}</button>
+                    <button type="submit" class="btn btn-primary btn-block" ng-disabled="itemForm.$invalid || uploading">{{uploading ? 'uploading...' : 'upload'}}</button>
                 </div>
             </div>
         </form>

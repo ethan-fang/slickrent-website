@@ -1,1 +1,1 @@
-var borrowApp = angular.module('borrow', ['ngRoute', 'itemControllers', 'infinite-scroll']);
+var borrowApp = angular.module('borrow', ['itemControllers', 'infinite-scroll']);
