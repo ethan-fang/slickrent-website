@@ -32,9 +32,9 @@
 <div class="site-wrapper">
     <div class="site-wrapper-inner">
         <div class="cover-container">
-            <div ng-include="'partials/header.html'" ng-controller="HeaderController" class="voffset9-bottom"></div>
-            <div ui-view></div>
-            <div ng-include="'partials/footer.html'" ng-controller="FooterController" class="voffset9"></div>
+            <div ng-include="'partials/header.html'" ng-controller="HeaderController" ></div>
+            <div ui-view class="voffset9 voffset9-bottom"></div>
+            <div ng-include="'partials/footer.html'" ng-controller="FooterController"></div>
         </div>
 
     </div>
@@ -52,6 +52,7 @@
 <script src="bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
 <script src="bower_components/ngInfiniteScroll/lib/infinite-scroll.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-breadcrumb/release/angular-breadcrumb.js"></script>
 
 
 

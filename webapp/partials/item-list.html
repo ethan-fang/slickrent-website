@@ -1,23 +1,34 @@
-<div class="inner cover voffset9" ng-controller="ItemListCtrl">
+<div class="inner cover" ng-controller="ItemListCtrl">
 
-    <h1 class="cover-heading voffset4-bottom">browse tools</h1>
-
+    <!--breadcrumb-->
+    <div class="row">
+        <span ncy-breadcrumb class="breadcrumb breadcrumb-pr pull-left transparent-background">/</span>
+    </div>
 
     <div>
-        <div class="voffset3">Search: <input ng-model="searchText" class="text-black"></div>
+        <div class="">Search: <input ng-model="searchText" class="text-black"></div>
 
         <div class="row voffset3 well well-lg"
              infinite-scroll="loadMore()" infinite-scroll-disabled="loadBusy || !haveMore" infinite-scroll-distance='1'>
 
             <div class="col-sm-6 col-md-4" ng-repeat="item in items | filter:searchText">
                 <div class="thumbnail">
-                    <a ui-sref="items-detail({itemId: item.id})">
-                        <img class="image-thumbnail img-responsive" ng-src = "{{serviceHostApiUrl}}image/{{item.imageUuids[0]}}" >
-                    </a>
+
+                    <div ng-switch on="state">
+                        <a ng-switch-when="items" ui-sref="items-detail({itemId: item.id})">
+                            <img class="image-thumbnail img-responsive" ng-src = "{{serviceHostApiUrl}}image/{{item.imageUuids[0]}}" >
+                        </a>
+                        <a ng-switch-when="my-items" ui-sref="my-items-detail({itemId: item.id})">
+                            <img class="image-thumbnail img-responsive" ng-src = "{{serviceHostApiUrl}}image/{{item.imageUuids[0]}}" >
+                        </a>
+                    </div>
                     <div class="caption scroll-row">
                         <h3  class="">{{item.itemName}}</h3>
                         <p>{{item.itemDescription}}</p>
-                        <p><a ui-sref="items-detail({itemId: item.id})" class="btn btn-primary" role="button">View Detail</a></p>
+                        <div ng-switch on="state">
+                            <a ng-switch-when="items"  ui-sref="items-detail({itemId: item.id})" class="btn btn-primary" role="button">View Detail</a>
+                            <a ng-switch-when="my-items"  ui-sref="my-items-detail({itemId: item.id})" class="btn btn-primary" role="button">View Detail</a>
+                        </div>
                     </div>
                 </div>
             </div>

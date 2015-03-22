@@ -75,6 +75,7 @@ itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$state',
         $scope.loadMoreText = '';
         $scope.loadBusy = false;
         $scope.haveMore = true;
+        $scope.state = $state.current.name;
 
         $scope.loadMore = function() {
             $scope.loadBusy = true;
