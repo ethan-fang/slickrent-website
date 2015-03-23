@@ -1,24 +1,55 @@
-var itemControllers = angular.module('itemControllers', ['xeditable', 'ui.bootstrap.datetimepicker']);
+var itemControllers = angular.module('itemControllers', ['xeditable', 'ui.bootstrap.datetimepicker', 'lend']);
 
 itemControllers.run(function(editableOptions) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
 
 
-itemControllers.controller('ItemDetailCtrl', ['$scope','$stateParams', '$http', '$log', '$window',
-    function($scope, $stateParams, $http, $log, $window) {
-        var userId;
+itemControllers.controller('ItemDetailCtrl', ['$scope','$stateParams', '$http', '$log', '$window', 'itemUpload',
+    function($scope, $stateParams, $http, $log, $window, itemUpload) {
+        var currentUser;
+        var itemId = $stateParams.itemId;
         var userJson = $window.sessionStorage.getItem('currentUser');
 
         if(userJson) {
-            userId = angular.fromJson(userJson).id;
+            currentUser = angular.fromJson(userJson);
         }
 
-        var itemId = $stateParams.itemId;
+
         $scope.imageUrl = SERVICE_HOST_API_URL;
-
         $scope.ownItem = false;
+        $scope.updating = false;
+        $scope.updateSuccess = false;
 
+
+        // this method should only be visible for logged in user
+        $scope.updateItem = function(item) {
+            if(!currentUser) {
+                $log.error("userId needs to be defined for updating an item");
+            }
+
+            $log.info(item);
+
+            $scope.updating = true;
+            $scope.updateSuccess = false;
+
+            var itemUpdateUrl = SERVICE_HOST_API_URL + 'shareitem/' + currentUser.id + '/' + item.id +'?clientId=' + CLIENT_ID;
+            itemUpload
+                .updateItem(item, item.imageUuids, itemUpdateUrl, currentUser)
+                .then(function(){
+                    $scope.updating = false;
+                    $scope.updateSuccess = true;
+
+                    $log.info('update succeeded');
+                }, function() {
+                    $scope.updating = false;
+                    $scope.updateSuccess = false;
+
+                    $log.info('update failed');
+                });
+        };
+
+        // run on load of page
         // fetch item on page load
         $http({
             url: SERVICE_HOST_API_URL + "shareitem/" + itemId,
@@ -31,33 +62,24 @@ itemControllers.controller('ItemDetailCtrl', ['$scope','$stateParams', '$http', 
             $log.info(response.item);
 
             var price = response.item.price? (response.item.price.amount.amount /100) : null;
-            var rentalStart = response.item.rentalPeriods?response.item.rentalPeriods.lowerEndpoint: null;
-            var rentalEnd = response.item.rentalPeriods?response.item.rentalPeriods.upperEndpoint: null;
+            var rentalStart = response.item.rentalPeriod?response.item.rentalPeriod.lowerEndpoint: null;
+            var rentalEnd = response.item.rentalPeriod?response.item.rentalPeriod.upperEndpoint: null;
 
             $scope.item = {
                 'id': response.item.id,
                 'imageUuids': response.item.imageUuids,
-                'itemDescription': response.item.itemDescription,
-                'itemName': response.item.itemName,
+                'description': response.item.itemDescription,
+                'name': response.item.itemName,
                 'price': price,
-                'rentalStart': rentalStart,
-                'rentalEnd': rentalEnd,
+                'rentalStart': new moment(rentalStart).toDate(),
+                'rentalEnd': new moment(rentalEnd).toDate(),
                 'userId': response.item.ownerId
             }
 
-            $scope.ownItem = ($scope.item.userId === userId);
+            $scope.ownItem = ($scope.item.userId === currentUser.id);
             $log.info($scope.item);
         });
 
-
-        $scope.updateItem = function(item) {
-            $log.info(item);
-//            $http.post(uploadUrl, JSON.stringify(item), {
-//                headers: {
-//                    'Content-Type': 'application/json',
-//                    'Authorization': 'bearer ' + currentUser.accessToken}
-//            });
-        };
 
     }
 ]);

@@ -44,12 +44,25 @@ lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
         itemToUpload.pricePerHour = rawItem.price;
         itemToUpload.images = imageUuids;
         itemToUpload.quantity = 1;
-        itemToUpload.rentalPeriods = [{
-            "lowerBoundType": "CLOSED",
-            "lowerEndpoint": rawItem.rentalStart.toISOString(),
-            "upperBoundType": "CLOSED",
-            "upperEndpoint": rawItem.rentalEnd.toISOString()
-        }];
+
+        var rentalPeriod;
+        if(rawItem.rentalStart) {
+            if(!rentalPeriod) {
+                rentalPeriod = {};
+            }
+            rentalPeriod.lowerBoundType = "CLOSED";
+            rentalPeriod.lowerEndpoint = rawItem.rentalStart.toISOString();
+        }
+        if(rawItem.rentalEnd) {
+            if(!rentalPeriod) {
+                rentalPeriod = {};
+            }
+            rentalPeriod.upperBoundType = "CLOSED";
+            rentalPeriod.upperEndpoint = rawItem.rentalEnd.toISOString();
+        }
+        if(rentalPeriod) {
+            itemToUpload.rentalPeriods = [rentalPeriod];
+        }
 
         return itemToUpload;
     };
@@ -79,6 +92,17 @@ lendApp.service('itemUpload', ['$http', '$log', function ($http, $log) {
         });
     };
 
+    this.updateItem = function(item, imageUuids, uploadUrl, currentUser) {
+        var itemToUpdate = prepareItem(item, imageUuids);
+        $log.info(itemToUpdate);
+
+        return $http.put(uploadUrl, JSON.stringify(itemToUpdate), {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'bearer ' + currentUser.accessToken}
+        });
+    };
 
 }]);
 
