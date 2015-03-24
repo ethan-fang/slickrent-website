@@ -72,7 +72,10 @@
     color: #337ab7;
 }
 
-
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}
 
 
 

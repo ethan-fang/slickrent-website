@@ -6,7 +6,7 @@ var CLIENT_ID='e7568b2c-2c0f-480e-9e34-08f9a4b807dc';
 
 
 var slickrentApp = angular.module('slickrent',
-    ['header', 'footer', 'lend', 'borrow', 'loginModule', 'profileModule',
+    ['slickrentBackend', 'header', 'footer', 'lend', 'borrow', 'loginModule', 'profileModule',
         'ui.bootstrap.datetimepicker', 'ui.router', 'ncy-angular-breadcrumb']);
 
 

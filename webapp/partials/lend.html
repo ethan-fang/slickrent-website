@@ -14,19 +14,19 @@
         </div>
 
         <form class="form-horizontal" name="itemForm" ng-submit="uploadItem(item, itemForm.$valid)" novalidate>
-            <div class="form-group">
+            <div class="form-group required">
                 <label for="itemName" class="col-md-2 control-label">Name:</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="itemName" placeholder="name" name="name" ng-model="item.name" required>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group required">
                 <label for="itemDescription" class="col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="itemDescription" placeholder="description" name="description" ng-model="item.description" required>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group required">
                 <label for="itemPrice" class="col-md-2 control-label">Price/Hour (USD$):</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" id="itemPrice" placeholder="price" name="price" ng-model="item.price" required>
@@ -40,7 +40,7 @@
                     <div class="dropdown">
                         <a class="dropdown-toggle" id="start-period" role="button" data-toggle="dropdown" data-target="#">
                             <div class="input-group">
-                                <input  id="rentalStartTime" type="text" class="form-control" data-ng-model="item.rentalStart" required>
+                                <input  id="rentalStartTime" type="text" class="form-control" data-ng-model="item.rentalStart">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </a>
@@ -57,7 +57,7 @@
                     <div class="dropdown">
                         <a class="dropdown-toggle" id="end-period" role="button" data-toggle="dropdown" data-target="#">
                             <div class="input-group">
-                                <input  id="rentalEndTime" type="text" class="form-control" data-ng-model="item.rentalEnd" required>
+                                <input  id="rentalEndTime" type="text" class="form-control" data-ng-model="item.rentalEnd">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             </div>
                         </a>
@@ -68,11 +68,15 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group required" required>
                 <label for="itemImage" class="col-md-2 control-label">Image:</label>
                 <div class="col-md-10">
-                    <input id="itemImage" ng-model="item.image" file-model="item.imageContent" name="image" type="file" accept="image/*" valid-file required />
+                    <input id="itemImage" ng-model="item.image" file-model="item.imageContent" name="image" type="file" accept="image/*" valid-file required/>
                 </div>
+            </div>
+
+            <div>
+                <label>Please fill in all fields with asterisk before submitting</label>
             </div>
 
             <div class="form-group">

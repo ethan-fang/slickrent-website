@@ -1,20 +1,14 @@
-var itemControllers = angular.module('itemControllers', ['xeditable', 'ui.bootstrap.datetimepicker', 'lend']);
+var itemControllers = angular.module('itemControllers', ['xeditable', 'ui.bootstrap.datetimepicker', 'slickrentUtil']);
 
 itemControllers.run(function(editableOptions) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
 
 
-itemControllers.controller('ItemDetailCtrl', ['$scope','$stateParams', '$http', '$log', '$window', 'itemUpload',
-    function($scope, $stateParams, $http, $log, $window, itemUpload) {
-        var currentUser;
+itemControllers.controller('ItemDetailCtrl', ['$scope','$stateParams', '$http', '$log', '$window', 'itemUpload', 'slickrentUtil',
+    function($scope, $stateParams, $http, $log, $window, itemUpload, slickrentUtil) {
+        var currentUser = slickrentUtil.getCurrentUserFromSession($window);
         var itemId = $stateParams.itemId;
-        var userJson = $window.sessionStorage.getItem('currentUser');
-
-        if(userJson) {
-            currentUser = angular.fromJson(userJson);
-        }
-
 
         $scope.imageUrl = SERVICE_HOST_API_URL;
         $scope.ownItem = false;
