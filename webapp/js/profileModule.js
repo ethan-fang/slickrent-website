@@ -1,5 +1,23 @@
 var profileModule = angular.module('profileModule', ['slickrentBackend', 'slickrentUtil']);
 
+profileModule.directive("compareTo", function(){
+    return {
+        require: "ngModel",
+        scope: {
+            otherModelValue: "=compareTo"
+        },
+        link: function(scope, element, attributes, ngModel) {
+
+            ngModel.$validators.compareTo = function(modelValue) {
+                return modelValue == scope.otherModelValue;
+            };
+
+            scope.$watch("otherModelValue", function() {
+                ngModel.$validate();
+            });
+        }
+    };
+});
 
 profileModule.controller('ProfileController', ['$scope', '$log', 'userUpload', 'slickrentUtil', function($scope, $log, userUpload, slickrentUtil) {
 
@@ -29,11 +47,14 @@ profileModule.controller('ProfileController', ['$scope', '$log', 'userUpload', '
 
 
     $scope.currentUser = currentUser;
-    $scope.updating = false;
-    $scope.updateSuccess = false;
+    $scope.profileUpdating = false;
+    $scope.profileUpdateSuccess = false;
+
+    $scope.passwordUpdating = false;
+    $scope.passwordUpdateSuccess = false;
 
     $scope.updateProfile = function(profileForm) {
-        $scope.updating = true;
+        $scope.profileUpdating = true;
 
         profileForm.photoUuid = slickrentUtil.randomUuid();
 
@@ -42,18 +63,38 @@ profileModule.controller('ProfileController', ['$scope', '$log', 'userUpload', '
             .then(
                 function(response) {
                     $log.info(response);
-                    $scope.updating = false;
-                    $scope.updateSuccess = true;
+                    $scope.profileUpdating = false;
+                    $scope.profileUpdateSuccess = true;
                 },
                 function(response){
                     $log.info(response);
-                    $scope.updating = false;
-                    $scope.updateSuccess = false;
+                    $scope.profileUpdating = false;
+                    $scope.profileUpdateSuccess = false;
                 }
             );
     };
 
-    $scope.reset = function(){
-        $scope.profile = {};
+    $scope.updatePassword = function(password) {
+        $log.info(password);
+        $scope.passwordUpdating = true;
+
+        userUpload
+            .updatePassword(password.oldPassword, password.newPassword, currentUser)
+            .then(
+            function(response) {
+                $log.info(response);
+                $scope.passwordUpdating = false;
+                $scope.passwordUpdateSuccess = true;
+            },
+            function(response){
+                $log.info(response);
+                $scope.passwordUpdating = false;
+                $scope.passwordUpdateSuccess = false;
+            }
+        );
+    }
+
+    $scope.reset = function(toReset){
+        toReset = {};
     }
 }]);

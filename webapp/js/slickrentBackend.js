@@ -87,6 +87,19 @@ slickrentBackendApp.service('userUpload', ['$http', '$log',
             });
         };
 
+        this.updatePassword = function(oldPassword, newPassword, currentUser) {
+            var updateUrl = SERVICE_HOST_API_URL + "user/password/" + currentUser.id;
+            return $http.put(updateUrl, {'oldPassword': oldPassword, 'newPassword': newPassword}, {
+                params: {
+                    clientId: CLIENT_ID
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'bearer ' + currentUser.accessToken}
+            });
+
+        };
+
 
 
 
