@@ -4,12 +4,7 @@ var loginModule = angular.module('loginModule', ['ngFacebook']);
 // setup facebook login
 loginModule
 .config( function($facebookProvider) {
-        // main app
-//        $facebookProvider.setAppId("770792652979234")
-
-        // localhost test app
-        $facebookProvider.setAppId("832332383491927")
-
+    $facebookProvider.setAppId(FACEBOOK_APP_ID)
 })
 .run(function($rootScope) {
     (function(d, s, id){
