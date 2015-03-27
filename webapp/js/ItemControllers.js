@@ -95,6 +95,7 @@ itemControllers.controller('ItemListCtrl', ['$scope', '$http', '$log', '$state',
 
         $scope.loadMore = function() {
             $scope.loadBusy = true;
+            $scope.loadMoreText = "loading...";
 
             $http({
                 url: SERVICE_HOST_API_URL + "shareitem",

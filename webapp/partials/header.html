@@ -10,7 +10,7 @@
                 <li ng-show="currentUser" ui-sref-active="active">
                     <div class="dropdown">
                         <i class="btn dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-expanded="true">
-                            {{currentUser.username}} <span class="caret"></span>
+                            <img ng-src="{{currentUser.profilePhotoUrl}}" alt="profile photo" class="img-circle" style="width:30px;height:30px;"> {{currentUser.username}} <span class="caret"></span>
                         </i>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                             <li role="presentation"><a role="menuitem" tabindex="-1" ui-sref="profile">View profile</a></li>

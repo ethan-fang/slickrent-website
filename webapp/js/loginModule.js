@@ -4,7 +4,9 @@ var loginModule = angular.module('loginModule', ['ngFacebook']);
 // setup facebook login
 loginModule
 .config( function($facebookProvider) {
-    $facebookProvider.setAppId(FACEBOOK_APP_ID)
+    $facebookProvider.setVersion("v2.3");
+    $facebookProvider.setAppId(FACEBOOK_APP_ID);
+    $facebookProvider.setPermissions("user_about_me, user_photos")
 })
 .run(function($rootScope) {
     (function(d, s, id){
@@ -124,30 +126,40 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$win
         };
 
         var fbRefresh = function() {
+
             $facebook.api("/me").then(
-                function(fbResponse) {
-                    // response: {id: "10204406685581735", email: "xin_041619@hotmail.com", first_name: "xinxin", gender: "male", last_name: "wang"…}
+                function(meResponse) {
+                    $facebook
+                        .api("/" + meResponse.id + "/picture")
+                        .then(
+                        function (pictureResponse) {
+                            $log.info(pictureResponse);
+                            var profilePhotoUrl = pictureResponse.data.url;
+                            authService
+                                .socialLogin({'username': meResponse.name, 'token': $facebook.getAuthResponse().accessToken})
+                                .then(function (socialLoginResponse) {
+                                    Session.create(meResponse.id, "token", 'role');
+                                    $window.sessionStorage.setItem(
+                                        'currentUser',
+                                        JSON.stringify({
+                                            'username': meResponse.name,
+                                            'email': meResponse.email,
+                                            'accessToken': socialLoginResponse.data.user.accessToken,
+                                            'id': socialLoginResponse.data.user.id,
+                                            'profilePhotoUrl': profilePhotoUrl
+                                        }));
 
-                    authService
-                        .socialLogin({'username': fbResponse.name, 'token': $facebook.getAuthResponse().accessToken})
-                        .then(function (socialLoginResponse) {
-                            Session.create(fbResponse.id, "token", 'role');
-                            $window.sessionStorage.setItem(
-                                'currentUser',
-                                JSON.stringify({
-                                    'username': fbResponse.name,
-                                    'email': fbResponse.email,
-                                    'accessToken': socialLoginResponse.data.user.accessToken,
-                                    'id': socialLoginResponse.data.user.id
-                                }));
+                                    //on login success, broadcast
+                                    $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+                                });
 
-                            //on login success, broadcast
-                            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-                    });
-                },
-                function(err) {
-                    $scope.welcomeMsg = "Please log in";
-                    $log.error("please log in first");
+
+                        }, function (error) {
+                            $log.error("picture request failed with response: " + error);
+                            $scope.welcomeMsg = "Please log in";
+                        });
+                }, function(meError){
+                    $log.error("me request failed with response: " + meError);
                 });
         };
 
@@ -169,6 +181,7 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$log', '$win
                 .login(credentials)
                 .then(function (response) {
                     Session.create(response.data.user.id, response.data.user.accessToken, 'role');
+                    response.data.user.profilePhotoUrl = "img/defaultProfilePhoto.jpg"; // default profile photo
                     $window.sessionStorage.setItem('currentUser', JSON.stringify(response.data.user));
 
                     //on login success, broadcast
