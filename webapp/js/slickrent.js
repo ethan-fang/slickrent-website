@@ -1,7 +1,5 @@
-//var SERVICE_HOST_API_URL = "http://localhost:8080/api/";
-//var SERVICE_HOST_API_URL = "http://54.84.57.3:9001/api/";
-
-var env = 'dev';
+//var env = 'dev';
+var env = 'prod';
 var GLOBAL_CONFIG = {
     'dev': {
         serviceHostApiUrl: 'http://localhost:8080/api/',
